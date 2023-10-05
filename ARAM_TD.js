@@ -215,7 +215,7 @@ function createCircle() { // div 엘리먼트를 리턴하는 함수
 
 function addCircle() { // 원을 동적 생성하는 함수 (챔피언 수만큼 163개 생성함)
     const container = document.getElementById('circleContainer'); // 챔피언 리스트 섹터에 있는 <div> 엘리먼트 갖고 옴
-    for (let i = 0; i < 163; i++) { // 챔피언 수만큼 생성
+    for (let i = 0; i < MAX_CHAMP; i++) { // 챔피언 수만큼 생성
         const circle = createCircle(); // div 태그, circle 클래스를 가진 엘리먼트를 리턴받음
         circle.style.textAlign = 'center'; // 텍스트 중앙정렬
         circle.style.marginTop = '10px';
