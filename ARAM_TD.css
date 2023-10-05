@@ -1,0 +1,260 @@
+body, html {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.background-image {
+    background-image: url("backGround/111.jpg");
+    background-size: cover; /* 배경 이미지를 화면에 맞게 조절 */
+    position: fixed; /* 배경 이미지를 고정시킴 */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1; /* 다른 요소 위에 위치하도록 함 */
+}
+
+img {
+    cursor: pointer;
+    border: 2px solid black;
+    border-radius: 50%;
+    width: 30%;
+    transition: transform 0.3s ease;
+}
+
+img:hover {
+    transform: scale(1.05);
+}
+
+button {
+    transition: transform 0.2s ease;
+}
+
+button:hover {
+    transform: scale(1.05);
+}
+
+.top-blank {
+    padding-bottom: 1vh;
+}
+
+.pick-container {
+    display: flex;
+    margin-bottom: 1vh;
+    justify-content: center;
+}
+
+.pick-card {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.versus {
+    border: 0;
+    cursor: auto;
+    opacity: 100;
+    padding-left: 2.2vw;
+    padding-right: 2.2vw;
+}
+
+.versus:hover {
+    transform: scale(1);
+}
+
+.pick-card img {
+    display: flex;
+    width: 5.2vw;
+    border-radius: 0%;
+    margin-right: 6px;
+    margin-left: 6px;
+    border: 3px solid blakc;
+}
+
+.left-blank {
+    padding-right: 15.4vw;
+}
+
+.container {
+    display: flex;
+    height: 39vh;
+    justify-content: center;
+    align-items: center;
+}
+
+.container button {
+    width: 5vw;
+    height: 5vh;
+}
+
+.copy-team {
+    margin-left: 1vw;
+    margin-right: 1vw;
+}
+
+.text {
+    margin-left: 5px;
+    font-size: 20px;
+    object-fit: cover;
+    font-weight: bold;
+}
+
+.row {
+    display: flex;
+    align-items: center;
+    height: 20%;
+    border-bottom: 1px solid black;
+}
+
+.team1 {
+    border: 3px solid black;
+    width: 29vw;
+    height: 95%;
+    display: flex;
+    overflow: hidden;
+    background: radial-gradient(at 50% 50%, #10212a, #020b12);
+    color: #d1d1d1;
+}
+
+.team1-1 {
+    display: flex;
+    flex-direction: column;
+    width: 33%;
+    overflow: hidden;
+    border-right: 1px solid black;
+}
+
+.team1-2 {
+    display: flex;
+    flex-direction: column;
+    width: 33%;
+    overflow: hidden;
+    border-right: 1px solid black;
+}
+
+.team1-3 {
+    display: flex;
+    flex-direction: column;
+    width: 34%;
+    overflow: hidden;
+}
+
+.team1 img {
+    margin-left: 7%;
+}
+
+.main-menu {
+    display: flex;
+    flex-direction: column;
+    width: 10vw;
+    align-items: center;
+}
+
+.main-menu img {
+    width: 20%;
+}
+
+.bold {
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.team2 {
+    border: 3px solid black;
+    width: 29vw;
+    height: 95%;
+    display: flex;
+    overflow: hidden;
+    background: radial-gradient(at 50% 50%, #10212a, #020b12);
+    color: #d1d1d1;
+}
+
+.team2-1 {
+    display: flex;
+    flex-direction: column;
+    width: 33%;
+    overflow: hidden;
+    border-right: 1px solid black;
+}
+
+.team2-2 {
+    display: flex;
+    flex-direction: column;
+    width: 33%;
+    overflow: hidden;
+    border-right: 1px solid black;
+}
+
+.team2-3 {
+    display: flex;
+    flex-direction: column;
+    width: 34%;
+    overflow: hidden;
+}
+
+.team2 img {
+    margin-left: 7%;
+}
+
+.ban-pick {
+    display: flex;
+    flex-direction: column;
+}
+
+.ban-pick img {
+    border-radius: 0%;
+    width: 2.5vw;
+    margin-top: 0.5vh;
+    margin-bottom: 0.5vh;
+}
+
+.search-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 1vh;
+}
+
+.search-container img {
+    width: 6vw;
+    height: 0.1vh;
+}
+
+#기본-중간 {
+    width: 11vw;
+}
+
+.search-container input {
+    width: 8.5vw;
+    height: 3vh;
+    margin-top: 2vh;
+}
+
+.search-container button {
+    width: 6vw;
+    height: 4.5vh;
+}
+
+.list-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.ban-list {
+    display: grid;
+    grid-template-columns: repeat(8, 7vw);
+    grid-gap: 0px;
+    overflow: auto;
+    height: 38vh;
+    width: 58vw;
+    margin-left: 1vw;
+    margin-right: 1vw;
+    background: radial-gradient(at 50% 50%, #10212a, #020b12);
+    color: #d1d1d1;
+}
+
+.ban-list img {
+    width: 60%;
+}

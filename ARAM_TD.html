@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>무작위 총력전 토너먼트 드래프트</title>
+  <link rel="stylesheet" type="text/css" href="ARAM_TD.css">
+</head>
+
+<body>
+  <div class="background-image"></div>
+  <div class="top-blank"></div>
+  <div class="pick-container">
+    <div class="pick-card">
+      <img id="team1pick1" onclick="removePick(id)" src="Champions/기본.jpg" alt="Image">
+      <img id="team1pick2" onclick="removePick(id)" src="Champions/기본.jpg" alt="Image">
+      <img id="team1pick3" onclick="removePick(id)" src="Champions/기본.jpg" alt="Image">
+      <img id="team1pick4" onclick="removePick(id)" src="Champions/기본.jpg" alt="Image">
+      <img id="team1pick5" onclick="removePick(id)" src="Champions/기본.jpg" alt="Image">
+      <img class="versus" id="vs" src="Champions/vs.png" alt="Image">
+      <img id="team2pick1" onclick="removePick(id)" src="Champions/기본.jpg" alt="Image">
+      <img id="team2pick2" onclick="removePick(id)" src="Champions/기본.jpg" alt="Image">
+      <img id="team2pick3" onclick="removePick(id)" src="Champions/기본.jpg" alt="Image">
+      <img id="team2pick4" onclick="removePick(id)" src="Champions/기본.jpg" alt="Image">
+      <img id="team2pick5" onclick="removePick(id)" src="Champions/기본.jpg" alt="Image">
+    </div>
+  </div>
+  <div class="container">
+    <div class="team1"> <!-- 팀1 전체 -->
+      <div class="team1-1"> <!-- 팀1 픽1 ~ 픽5 -->
+        <div class="row">
+          <img id="team1p1" onclick="pickChamp(`team1p1t`, BLUE)" src="Champions/기본.jpg" alt="Image">
+          <div id="team1p1t" class="text"></div>
+        </div>
+        <div class="row">
+          <img id="team1p2" onclick="pickChamp(`team1p2t`, BLUE)" src="Champions/기본.jpg" alt="Image">
+          <div id="team1p2t" class="text"></div>
+        </div>
+        <div class="row">
+          <img id="team1p3" onclick="pickChamp(`team1p3t`, BLUE)" src="Champions/기본.jpg" alt="Image">
+          <div id="team1p3t" class="text"></div>
+        </div>
+        <div class="row">
+          <img id="team1p4" onclick="pickChamp(`team1p4t`, BLUE)" src="Champions/기본.jpg" alt="Image">
+          <div id="team1p4t" class="text"></div>
+        </div>
+        <div class="row">
+          <img id="team1p5" onclick="pickChamp(`team1p5t`, BLUE)" src="Champions/기본.jpg" alt="Image">
+          <div id="team1p5t" class="text"></div>
+        </div>
+      </div>
+      <div class="team1-2"> <!-- 팀1 픽6 ~ 픽10 -->
+        <div class="row">
+          <img id="team1p6" onclick="pickChamp(`team1p6t`, BLUE)" src="Champions/기본.jpg" alt="Image">
+          <div id="team1p6t" class="text"></div>
+        </div>
+        <div class="row">
+          <img id="team1p7" onclick="pickChamp(`team1p7t`, BLUE)" src="Champions/기본.jpg" alt="Image">
+          <div id="team1p7t" class="text"></div>
+        </div>
+        <div class="row">
+          <img id="team1p8" onclick="pickChamp(`team1p8t`, BLUE)" src="Champions/기본.jpg" alt="Image">
+          <div id="team1p8t" class="text"></div>
+        </div>
+        <div class="row">
+          <img id="team1p9" onclick="pickChamp(`team1p9t`, BLUE)" src="Champions/기본.jpg" alt="Image">
+          <div id="team1p9t" class="text"></div>
+        </div>
+        <div class="row">
+          <img id="team1p10" onclick="pickChamp(`team1p10t`, BLUE)" src="Champions/기본.jpg" alt="Image">
+          <div id="team1p10t" class="text"></div>
+        </div>
+      </div>
+      <div class="team1-3"> <!-- 팀1 픽11 ~ 픽15 -->
+        <div class="row">
+          <img id="team1p11" onclick="pickChamp(`team1p11t`, BLUE)" src="Champions/기본.jpg" alt="Image">
+          <div id="team1p11t" class="text"></div>
+        </div>
+        <div class="row">
+          <img id="team1p12" onclick="pickChamp(`team1p12t`, BLUE)" src="Champions/기본.jpg" alt="Image">
+          <div id="team1p12t" class="text"></div>
+        </div>
+        <div class="row">
+          <img id="team1p13" onclick="pickChamp(`team1p13t`, BLUE)" src="Champions/기본.jpg" alt="Image">
+          <div id="team1p13t" class="text"></div>
+        </div>
+        <div class="row">
+          <img id="team1p14" onclick="pickChamp(`team1p14t`, BLUE)" src="Champions/기본.jpg" alt="Image">
+          <div id="team1p14t" class="text"></div>
+        </div>
+        <div class="row">
+          <img id="team1p15" onclick="pickChamp(`team1p15t`, BLUE)" src="Champions/기본.jpg" alt="Image">
+          <div id="team1p15t" class="text"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="main-menu">
+      <button class="roll" onclick="rollChamp()">새로고침</button>
+      <img id="기본" style="opacity: 0; cursor: auto;" src="Champions/기본.jpg">
+      <button class="ban-type" onclick="changeChampType()">
+        <span class="bold" id="champ-15">15</span>
+        /
+        <span class="normal" id="champ-10">10</span>
+        /
+        <span class="normal" id="champ-5">5</span>
+      </button>
+      <img id="기본" style="opacity: 0; cursor: auto;" src="Champions/기본.jpg">
+      <button class="ban-type" onclick="changeBanType()">
+        <span class="bold" id="ban-122">122</span> / <span class="normal" id="ban-111">111</span>
+      </button>
+      <img id="기본" style="opacity: 0; cursor: auto;" src="Champions/기본.jpg">
+      <button class="clear" onclick="clearAll()">초기화</button>
+    </div>
+
+    <div class="team2"> <!-- 팀2 전체 -->
+      <div class="team2-1"> <!-- 팀2 픽1 ~ 픽5 -->
+        <div class="row">
+          <img id="team2p1" onclick="pickChamp(`team2p1t`, RED)" src="Champions/기본.jpg" alt="Image">
+          <div id="team2p1t" class="text"></div>
+        </div>
+        <div class="row">
+          <img id="team2p2" onclick="pickChamp(`team2p2t`, RED)" src="Champions/기본.jpg" alt="Image">
+          <div id="team2p2t" class="text"></div>
+        </div>
+        <div class="row">
+          <img id="team2p3" onclick="pickChamp(`team2p3t`, RED)" src="Champions/기본.jpg" alt="Image">
+          <div id="team2p3t" class="text"></div>
+        </div>
+        <div class="row">
+          <img id="team2p4" onclick="pickChamp(`team2p4t`, RED)" src="Champions/기본.jpg" alt="Image">
+          <div id="team2p4t" class="text"></div>
+        </div>
+        <div class="row">
+          <img id="team2p5" onclick="pickChamp(`team2p5t`, RED)" src="Champions/기본.jpg" alt="Image">
+          <div id="team2p5t" class="text"></div>
+        </div>
+      </div>
+      <div class="team2-2"> <!-- 팀2 픽6 ~ 픽10 -->
+        <div class="row">
+          <img id="team2p6" onclick="pickChamp(`team2p6t`, RED)" src="Champions/기본.jpg" alt="Image">
+          <div id="team2p6t" class="text"></div>
+        </div>
+        <div class="row">
+          <img id="team2p7" onclick="pickChamp(`team2p7t`, RED)" src="Champions/기본.jpg" alt="Image">
+          <div id="team2p7t" class="text"></div>
+        </div>
+        <div class="row">
+          <img id="team2p8" onclick="pickChamp(`team2p8t`, RED)" src="Champions/기본.jpg" alt="Image">
+          <div id="team2p8t" class="text"></div>
+        </div>
+        <div class="row">
+          <img id="team2p9" onclick="pickChamp(`team2p9t`, RED)" src="Champions/기본.jpg" alt="Image">
+          <div id="team2p9t" class="text"></div>
+        </div>
+        <div class="row">
+          <img id="team2p10" onclick="pickChamp(`team2p10t`, RED)" src="Champions/기본.jpg" alt="Image">
+          <div id="team2p10t" class="text"></div>
+        </div>
+      </div>
+      <div class="team2-3"> <!-- 팀2 픽11 ~ 픽15 -->
+        <div class="row">
+          <img id="team2p11" onclick="pickChamp(`team2p11t`, RED)" src="Champions/기본.jpg" alt="Image">
+          <div id="team2p11t" class="text"></div>
+        </div>
+        <div class="row">
+          <img id="team2p12" onclick="pickChamp(`team2p12t`, RED)" src="Champions/기본.jpg" alt="Image">
+          <div id="team2p12t" class="text"></div>
+        </div>
+        <div class="row">
+          <img id="team2p13" onclick="pickChamp(`team2p13t`, RED)" src="Champions/기본.jpg" alt="Image">
+          <div id="team2p13t" class="text"></div>
+        </div>
+        <div class="row">
+          <img id="team2p14" onclick="pickChamp(`team2p14t`, RED)" src="Champions/기본.jpg" alt="Image">
+          <div id="team2p14t" class="text"></div>
+        </div>
+        <div class="row">
+          <img id="team2p15" onclick="pickChamp(`team2p15t`, RED)" src="Champions/기본.jpg" alt="Image">
+          <div id="team2p15t" class="text"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="search-container">
+    <input type="text" style="opacity: 0;" placeholder="검색어를 입력하세요">
+    <img id="기본" style="opacity: 0; cursor: auto;" src="Champions/기본.jpg">
+    <button class="copy-team" onclick="copyTeam(BLUE)">1팀 복사</button>
+    <img id="기본-중간" style="opacity: 0; cursor: auto;" src="Champions/기본.jpg">
+    <button class="copy-team" onclick="copyTeam(RED)">2팀 복사</button>
+    <img id="기본" style="opacity: 0; cursor: auto;" src="Champions/기본.jpg">
+    <input type="text" id="searchInput" placeholder="챔피언 이름을 입력하세요">
+  </div>
+  <div class="list-container">
+    <div class="ban-pick">
+      <img id="b1" onclick="removeBan(id)" src="Champions/기본.jpg">
+      <img id="b2" onclick="removeBan(id)" src="Champions/기본.jpg">
+      <img id="b3" onclick="removeBan(id)" src="Champions/기본.jpg">
+      <img id="b4" onclick="removeBan(id)" src="Champions/기본.jpg">
+      <img id="b5" onclick="removeBan(id)" src="Champions/기본.jpg">
+    </div>
+    <div class="ban-list" id="circleContainer"></div>
+    <div class="ban-pick">
+      <img id="b6" onclick="removeBan(id)" src="Champions/기본.jpg">
+      <img id="b7" onclick="removeBan(id)" src="Champions/기본.jpg">
+      <img id="b8" onclick="removeBan(id)" src="Champions/기본.jpg">
+      <img id="b9" onclick="removeBan(id)" src="Champions/기본.jpg">
+      <img id="b10" onclick="removeBan(id)" src="Champions/기본.jpg">
+    </div>
+  </div>
+
+  <script src="ARAM_TD.js"> </script>
+
+</body>
+
+</html>
