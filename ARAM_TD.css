@@ -5,7 +5,7 @@ body, html {
 }
 
 .background-image {
-    background-image: url("backGround/111.jpg");
+    background-color: gray;
     background-size: cover; /* 배경 이미지를 화면에 맞게 조절 */
     position: fixed; /* 배경 이미지를 고정시킴 */
     top: 0;
