@@ -5,9 +5,10 @@ body, html {
 }
 
 .background-image {
-    background-color: gray;
-    background-size: cover; /* 배경 이미지를 화면에 맞게 조절 */
+    background-image: url("BackGround/Freljord.jpg");
+    background-size: contain; /* 배경 이미지를 화면에 맞게 조절 */
     position: fixed; /* 배경 이미지를 고정시킴 */
+    filter: brightness(0.5) saturate(0.4);
     top: 0;
     left: 0;
     width: 100%;
@@ -56,7 +57,6 @@ button:hover {
     border-radius: 0%;
     margin-right: 6px;
     margin-left: 6px;
-    border: 3px solid blakc;
 }
 
 .team1pick {
@@ -69,8 +69,8 @@ button:hover {
 
 .versus {
     border: 0;
+    opacity: 1;
     cursor: auto;
-    opacity: 100;
     padding-left: 2.2vw;
     padding-right: 2.2vw;
 }
