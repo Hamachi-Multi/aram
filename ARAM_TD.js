@@ -7,201 +7,250 @@ const champ = ["가렌","갈리오","갱플랭크","그라가스","그레이브�
 ,"요릭","우디르","우르곳","워윅","유미","이렐리아","이블린","이즈리얼","일라오이","자르반","자야","자이라","자크","잔나","잭스","제드","제라스","제리","제이스","조이","직스","진","질리언"
 ,"징크스","초가스","카르마","카밀","카사딘","카서스","카시오페아","카이사","카직스","카타리나","칼리스타","케넨","케이틀린","케인","케일","코그모","코르키","퀸","크산테","클레드","키아나"
 ,"킨드레드","타릭","탈론","탈리야","탐 켄치","트런들","트리스타나","트린다미어","트위스티드 페이트","트위치","티모","파이크","판테온","피들스틱","피오라","피즈","하이머딩거","헤카림","흐웨이"];
-const ban122 = [0, 5, 6, 1, 2, 7, 8, 3, 4, 9]; // 122 밴 인덱스 (1팀 1밴 -> 2팀 2밴 -> 1팀 2밴 ...)
-const ban111 = [0, 5, 1, 6, 2, 7, 3, 8, 4, 9]; // 111 밴 인덱스 (1팀 1밴 -> 2팀 1밴 -> 1팀 1밴 ...)
+const ban122 = [0, 5, 6, 1, 2, 7, 8, 3, 4, 9]; // 122 밴 인덱스 (블루팀 1밴 -> 레드팀 2밴 -> 블루팀 2밴 ...)
+const ban111 = [0, 5, 1, 6, 2, 7, 3, 8, 4, 9]; // 111 밴 인덱스 (블루팀 1밴 -> 레드팀 1밴 -> 블루팀 1밴 ...)
+
+const ORIGINAL = document.getElementById(`기본`);
 
 const MAX_CHAMP = 165;
 
 const BLUE = 1;
 const RED = 2;
 
+const RANDTYPE_15 = 15;
+const RANDTYPE_10 = 10;
+const RANDTYPE_5 = 5;
+
+const BANTYPE_122 = 1;
+const BANTYPE_111 = 2;
+
+const MAX_RAND_CHAMPS = 15;
+const MAX_PICK_CHAMPS = 5;
+const MAX_BAN_CHAMPS = 10;
+
+const TEAM_BLUE_RAND = `team${BLUE}r`;
+const TEAM_RED_RAND = `team${RED}r`;
+
+const TEAM_BLUE_PICK = `team${BLUE}p`;
+const TEAM_RED_PICK = `team${RED}p`;
+
+const BAN = `b`;
+
 let banType = 1; // 1 -> 122, 2 -> 111
-let champType = 1; // 1 -> 15, 2 -> 10, 3 -> 5
+let randType = 15; // 1 -> 15, 2 -> 10, 3 -> 5
 
 let oldPick = []; // 새로고침을 누르기 전에 있었던 픽들
 let newPick = []; // 새로고침을 눌러서 나온 픽들
 let ban = []; // 밴한 챔피언들
 
-function changeChamp(id, textid, index) { // 챔피언을 랜덤으로 골라주는 함수
-    while (true) { // 조건을 충족하는 챔피언이 나올 때까지 무한반복
-        let rand = Math.floor(Math.random() * MAX_CHAMP); // 랜덤 인덱스
+function changeChampion(circleID, newPickIndex) { // 챔피언을 랜덤으로 골라주는 함수
+    while (true) { // 조건을 충족하는 챔피언이 나올 때까지 반복
+        let randChamp = Math.floor(Math.random() * MAX_CHAMP); // 랜덤 인덱스
 
         // (새로고침을 누르기 전에 있던 챔피언 || 새로고침을 눌러서 나온 챔피언 || 밴한 챔피언) 중에 하나라도 겹치면 continue
-        if (oldPick.includes(champ[rand])
-            || newPick.includes(champ[rand])
-            || ban.includes(champ[rand])) continue;
+        if (oldPick.includes(champ[randChamp])
+            || newPick.includes(champ[randChamp])
+            || ban.includes(champ[randChamp])) continue;
+        
         else { // 겹치는 챔피언이 아니라면
-            let circle = document.getElementById(id); // 원 가져오기
-            let imgUrl = champ[rand]; // 챔피언 이름
+            let circle = document.getElementById(circleID); // 원 가져오기
+            let imgUrl = champ[randChamp]; // 챔피언 이름
 
-            newPick[index] = (champ[rand]); // 챔피언 이름을 newBan 배열에 push
+            newPick[newPickIndex] = (champ[randChamp]); // 챔피언 이름을 newBan 배열에 push
 
             circle.src = `Champions/${imgUrl}.jpg`; // 원 이미지 변경
-            changeText(textid, champ[rand]) // 텍스트 변경
+            changeText(`${circleID}t`, champ[randChamp]) // 텍스트 변경
             break;
         }
     }
-
 }
 
-function changeText(id, string) { // 텍스트 변경하는 함수
-    const text = document.getElementById(id); // 텍스트 엘리먼트 가져오기
+function changeText(textID, string) { // 텍스트 변경하는 함수
+    const text = document.getElementById(textID); // 텍스트 엘리먼트 가져오기
     text.textContent = string; // 텍스트 변경
 }
 
-async function copyTeam(team) { // 랜덤으로 뽑은 챔프들 복사하는 함수
-    let pickList = []; // 임시로 챔프들을 저장할 배열
+function getRandomChampionsArray(team) { // 랜덤으로 뽑은 챔프들 이름을 클립보드로 복사하는 함수
+    let randChampsList = []; // 임시로 챔프들을 저장할 배열
 
-    if (team == 1) { // 만약 team이 1이면
-        for (let i = 0; i < 15; i++) { // newPick 0 ~ 14 까지 복사
-            if (newPick[i] == undefined) break; // 만약 undefined가 나오면 중지
-            pickList[i] = " " + newPick[i]; // pickList에 순차적으로 저장
+    if (team == BLUE) { // 만약 블루팀이면
+        for (let i = 0; i < MAX_RAND_CHAMPS; i++) { // newPick 0 ~ 14 까지 복사
+            if (newPick[i] == undefined) break; // 만약 undefined가 나오면 중지 (새로고침 챔피언을 5개, 10개로 설정했을 때)
+            randChampsList[i] = ' ' + newPick[i]; // randChampsList에 순차적으로 저장
         }
     }
-    else if (team == 2) { // 만약 team이 2면
-        for (let i = 15; i < 30; i++) { // newPick 15 ~ 29 까지 복사
-            if (newPick[i] == undefined) break; // 만약 undefined가 나오면 중지
-            pickList[i - 15] = " " + newPick[i]; // pickList에 순차적으로 저장
+    else if (team == RED) { // 만약 레드팀이면
+        for (let i = MAX_RAND_CHAMPS; i < (MAX_RAND_CHAMPS * 2); i++) { // newPick 15 ~ 29 까지 복사
+            if (newPick[i] == undefined) break; // 만약 undefined가 나오면 중지 (새로고침 챔피언을 5개, 10개로 설정했을 때)
+            randChampsList[i - 15] = ' ' + newPick[i]; // randChampsList에 순차적으로 저장
         }
     }
 
+    return randChampsList;
+}
+
+async function copyRandomChampionsToClipboard(team) {
+    let randChampsList = getRandomChampionsArray(team); // 배열
+console.log(randChampsList);
     try {
-        if (team == 1) // 만약 team이 1이면
-            await navigator.clipboard.writeText("1팀:" + pickList); // 접두어를 1팀으로
-        else if (team == 2) // 만약 team이 2면
-            await navigator.clipboard.writeText("2팀:" + pickList); // 접두어를 2팀으로
+        if (team == BLUE) // 만약 블루팀이면
+            await navigator.clipboard.writeText("1팀:" + randChampsList); // 접두어를 1팀으로
+        else if (team == RED) // 만약 레드팀이면
+            await navigator.clipboard.writeText("2팀:" + randChampsList); // 접두어를 2팀으로
     }
     catch (err) { // 에러 리턴
         return;
     }
+
     const audio = new Audio('Sound/메뉴.wav');
     audio.play();
 }
 
-function rollChamp() { // 새로고침을 눌렀을 때 반복문을 돌면서 changeChamp 함수를 실행하는 함수
+function rollChampions() { // 새로고침을 눌렀을 때 반복문을 돌면서 changeChamp 함수를 실행하는 함수
     newPick = []; // 복사하기 전에 초기화
-    if (champType == 1) { // 팀당 챔피언 15개
-        for (let i = 1; i <= 2; i++) {
-            for (let j = 1; j <= 15; j++) { // 팀1 - 팀2, 팀당 15개 챔피언
-                changeChamp(`team${i}p${j}`, `team${i}p${j}t`, j + ((i - 1) * 15) - 1); // 팀1, 15개 챔피언 뽑기 (이미지 + 텍스트)
-            }
+    if (randType == RANDTYPE_15) { // 랜덤 챔피언 15개
+        for (let i = 0; i < RANDTYPE_15; i++) {
+            changeChampion(`${TEAM_BLUE_RAND}${i + 1}`, i);
+            changeChampion(`${TEAM_RED_RAND}${i + 1}`, i + 15);
         }
     }
-    else if (champType == 2) { // 팀당 챔피언 10개
-        for (let i = 1; i <= 2; i++) {
-            for (let j = 1; j <= 10; j++) { // 팀1 - 팀2, 팀당 10개 챔피언
-                changeChamp(`team${i}p${j}`, `team${i}p${j}t`, j + ((i - 1) * 15) - 1); // 팀당 10개 챔피언 뽑기 (이미지 + 텍스트)
-            }
+
+    else if (randType == RANDTYPE_10) { // 랜덤 챔피언 10개
+       for (let i = 0; i < RANDTYPE_10; i++) { // 랜덤 챔피언 10개 뽑기
+            changeChampion(`${TEAM_BLUE_RAND}${i + 1}`, i);
+            changeChampion(`${TEAM_RED_RAND}${i + 1}`, i + 15);
+       }
+       for (let i = RANDTYPE_10; i < MAX_RAND_CHAMPS; i++) { // 남은 5칸 초기화
+            clearCircle(`${TEAM_BLUE_RAND}${i + 1}`, i);
+            clearCircle(`${TEAM_RED_RAND}${i + 1}`, i + 15);
+       }
+    }
+    
+    else if (randType == RANDTYPE_5) { // 팀당 챔피언 5개
+        for (let i = 0; i < RANDTYPE_5; i++) { // 랜덤 챔피언 5개 뽑기
+             changeChampion(`${TEAM_BLUE_RAND}${i + 1}`, i);
+             changeChampion(`${TEAM_RED_RAND}${i + 1}`, i + 15);
         }
-        for (let i = 1; i <= 2; i++) {
-            for (let j = 11; j <= 15; j++) { // 팀1 - 팀2, 나머지 엘리먼트 초기화
-                clearRoll(`team${i}p${j}`, `team${i}p${j}t`, j + ((i - 1) * 15) - 1); // 초기화
-            }
+        for (let i = RANDTYPE_5; i < MAX_RAND_CHAMPS; i++) { // 남은 10칸 초기화
+             clearCircle(`${TEAM_BLUE_RAND}${i + 1}`, i);
+             clearCircle(`${TEAM_RED_RAND}${i + 1}`, i + 15);
         }
     }
-    else if (champType == 3) { // 팀당 챔피언 5개
-        for (let i = 1; i <= 2; i++) {
-            for (let j = 1; j <= 5; j++) { // 팀1 - 팀2, 팀당 5개 챔피언
-                changeChamp(`team${i}p${j}`, `team${i}p${j}t`, j + ((i - 1) * 15) - 1); // 팀당 5개 챔피언 뽑기 (이미지 + 텍스트)
-            }
-        }
-        for (let i = 1; i <= 2; i++) {
-            for (let j = 6; j <= 15; j++) { // 팀1 - 팀2, 나머지 엘리먼트 초기화
-                clearRoll(`team${i}p${j}`, `team${i}p${j}t`, j + ((i - 1) * 15) - 1); // 초기화
-            }
-        }
-    }
+    
     const audio = new Audio('Sound/메뉴.wav');
     audio.play();
     oldPick = newPick.slice(); // 챔피언들을 모두 뽑고 나서 oldPick(새로고침 이전 챔피언들) 배열에 newPick(새로고침 이후 챔피언들) 배열을 복사
 }
 
-function changeChampType() { // 밴 타입을 변경하는 함수 (1 - 122, 2 - 111)
-    changeChampFont(); // 타입 변경 버튼 텍스트 조정
-    if (champType == 1) champType = 2;
-    else if (champType == 2) champType = 3;
-    else champType = 1;
+function changeRandomChampionsType() { // 랜덤 챔피언 개수를 변경하는 함수
+    if (randType == RANDTYPE_15) randType = RANDTYPE_10; // 현재 15가 선택되어있으면 10으로
+    else if (randType == RANDTYPE_10) randType = RANDTYPE_5; // 10 -> 5
+    else randType = RANDTYPE_15; // 5 -> 15
+
+    changeRandomChampionsTypeFont(); // 타입 변경 버튼 텍스트 조정
+    updateRollTitle();
+
     const audio = new Audio('Sound/메뉴.wav');
     audio.play();
 }
 
-function changeChampFont() { // (챔프 타입 변경 버튼) 텍스트의 굵기를 조정하는 함수 (bold, normal)
-    const champ15 = document.getElementById("champ-15"); // <span class="champ-15"> 15
-    const champ10 = document.getElementById("champ-10"); // <span class="champ-10"> 10
-    const champ5 = document.getElementById("champ-5"); // <span class="champ-5"> 5
-    if (champType == 1) { // 1 -> 2, 122는 normal, 111은 bold로 조정
-        champ15.classList.remove("bold");
-        champ15.classList.add("normal");
-        champ10.classList.remove("normal");
-        champ10.classList.add("bold");
-    }
-    else if (champType == 2) { // 2 -> 1, 122는 bold, 111은 normal로 조정
-        champ10.classList.remove("bold");
-        champ10.classList.add("normal");
-        champ5.classList.remove("normal");
-        champ5.classList.add("bold");
-    }
-    else if (champType == 3) {
-        champ5.classList.remove("bold");
-        champ5.classList.add("normal");
+function changeRandomChampionsTypeFont() { // (랜덤 챔피언 개수 변경 버튼) 텍스트 스타일을 변경하는 함수 (normal, bold)
+    const champ15 = document.getElementById("rand-15"); // 버튼 엘리먼트 안에 span 태그를 사용해서 15 10 5 각각 씀, 15 / 10 / 5 이렇게 되어있음
+    const champ10 = document.getElementById("rand-10");
+    const champ5 = document.getElementById("rand-5");
+
+    if (randType == RANDTYPE_15) { // 15 normal -> bold, 5 bold -> normal
         champ15.classList.remove("normal");
         champ15.classList.add("bold");
+        champ5.classList.remove("bold");
+        champ5.classList.add("normal");
+    }
+
+    else if (randType == RANDTYPE_10) { // 10 normal -> bold, 15 bold -> normal
+        champ10.classList.remove("normal");
+        champ10.classList.add("bold");
+        champ15.classList.remove("bold");
+        champ15.classList.add("normal");
+    }
+
+    else if (randType == RANDTYPE_5) { // 5 normal -> bold, 10 bold -> normal
+        champ5.classList.remove("normal");
+        champ5.classList.add("bold");
+        champ10.classList.remove("bold");
+        champ10.classList.add("normal");
     }
 }
 
-function clearPickBan(id) { // 해당 엘리먼트에 있는 이미지를 초기화하는 함수
-    const image = document.getElementById(id);
-    image.src = 'Champions/기본.jpg';
+function updateRollTitle() {
+    rollButton = document.getElementsByClassName("roll")[0];
+    if (randType == RANDTYPE_15) {
+        rollButton.title = "무작위 챔피언 15명을 뽑습니다.";
+    } else if (randType == RANDTYPE_10) {
+        rollButton.title = "무작위 챔피언 10명을 뽑습니다.";
+    } else if (randType == RANDTYPE_5) {
+        rollButton.title = "무작위 챔피언 5명을 뽑습니다.";
+    }
 }
 
-function clearRoll(id, textid, index) { // 해당 엘리먼트에 있는 이미지와 텍스트까지 초기화하는 함수
-    newPick[index] = undefined;
-    const circle = document.getElementById(id);
-    const text = document.getElementById(textid);
-    circle.src = `Champions/기본.jpg`;
+function clearCard(cardID) { // 엘리먼트의 이미지를 초기화하는 함수
+    const image = document.getElementById(cardID);
+    image.src = ORIGINAL.src;
+}
+
+function clearCircle(circleID, arrIndex) { // 엘리먼트의 이미지와 텍스트를 초기화하는 함수
+    newPick[arrIndex] = undefined; // newPick[arrIndex] 값 초기화
+    const circle = document.getElementById(circleID);
+    const text = document.getElementById(`${circleID}t`);
+    circle.src = ORIGINAL.src;
     text.textContent = "";
 }
 
-function pickChamp(textid, team) { // 새로고침 챔피언을 누르면 픽 카드에 챔피언을 추가하는 함수
-    const original = document.getElementById(`기본`);
-    text = document.getElementById(textid);
-    const index = champ.indexOf(text.textContent); // 새로고침 챔피언 옆에 있는 텍스트를 가져와서 champ 배열의 인덱스 탐색
-    if (index == -1) return; // champ 배열에 없는 텍스트면 리턴 (예외)
-    for (let i = 1; i <= 5; i++) { // 반복문 돌면서 비어있는 픽 카드 탐색
-        let pick = document.getElementById(`team${team}pick${i}`); // 픽 카드 엘리먼트 가져오기
-        if (pick.src == original.src) { // 픽 카드가 비어있으면 (기본.jpg)
-            pick.src = `Champions/${champ[index]}.jpg`; // 픽 카드에 챔피언 이미지 넣기
+function pickChampion(circle) { // 랜덤 챔피언을 누르면 픽 카드에 챔피언을 추가하는 함수
+    if (circle.src == ORIGINAL.src) return;
+
+    let team = ((String)(circle.id).startsWith(TEAM_BLUE_RAND)) ? BLUE : RED; // 해당 함수를 호출한 엘리먼트의 id를 비교해서 팀 설정
+    let pickCard;
+
+    for (let i = 0; i < 5; i++) { // 반복문 돌면서 비어있는 픽 카드 탐색
+        // 블루팀 픽 카드 or 레드팀 픽 카드
+        pickCard = (team == BLUE) ? document.getElementById(`${TEAM_BLUE_PICK}${i + 1}`) : document.getElementById(`${TEAM_RED_PICK}${i + 1}`);
+        if (pickCard.src == ORIGINAL.src) {
+            pickCard.src = circle.src;
             break;
         }
     }
+
     const audio = new Audio('Sound/선택.wav');
     audio.play();
 }
 
-function removePick(id) { // 픽 카드를 눌렀을 때 해당 엘리먼트를 초기화하는 함수
-    const image = document.getElementById(id);
-    const original = document.getElementById('기본');
-    if (image.src == original.src) return; // 비어있으면 리턴
-    image.src = 'Champions/기본.jpg'; // 해당 엘리먼트 이미지 초기화
+function clearPick(circle) { // 픽 카드 초기화
+    if (circle.src == ORIGINAL.src) return;
+
+    circle.src = ORIGINAL.src;
+
     const audio = new Audio('Sound/제거.wav');
     audio.play();
 }
 
 function clearAll() { // 반복문을 돌면서 모든 엘리먼트들을 초기화하는 함수
-    for (let i = 1; i <= 15; i++) {
-        clearRoll(`team1p${i}`, `team1p${i}t`); // 팀1, 15개 엘리먼트 초기화 (이미지 + 텍스트)
-        clearRoll(`team2p${i}`, `team2p${i}t`); // 팀2, 15개 엘리먼트 초기화 (이미지 + 텍스트)
+    for (let i = 0; i < MAX_RAND_CHAMPS; i++) {
+        clearCircle(`${TEAM_BLUE_RAND}${i + 1}`, i); // 블루팀 랜덤 챔피언 초기화
+        clearCircle(`${TEAM_RED_RAND}${i + 1}`, i); // 레드팀 랜덤 챔피언 초기화
     }
-    for (let i = 1; i <= 2; i++) {
-        for (let j = 1; j <= 5; j++) {
-            clearPickBan(`team${i}pick${j}`); // 팀1 - 팀2, 픽한 챔피언들 초기화 (이미지)
-        }
+
+    for (let i = 0; i < MAX_PICK_CHAMPS; i++) {
+        clearCard(`${TEAM_BLUE_PICK}${i + 1}`); // 블루팀 픽 카드 초기화
+        clearCard(`${TEAM_RED_PICK}${i + 1}`); // 레드팀 픽 카드 초기화
     }
-    for (let i = 1; i <= 10; i++) {
-        clearPickBan(`b${i}`); // 팀1 - 팀2, 밴한 챔피언들 초기화 (이미지)
+
+    for (let i = 0; i < MAX_BAN_CHAMPS; i++) {
+        clearCard(`${BAN}${i + 1}`); // 밴 초기화
     }
+
     const audio = new Audio('Sound/메뉴.wav');
     audio.play();
+    
     oldPick = []; // 새로고침 이전 챔피언들 초기화
     newPick = []; // 새로고침 이후 챔피언들 초기화
     ban = []; // 밴 챔피언들 초기화
@@ -213,8 +262,8 @@ function createCircle() { // div 엘리먼트를 리턴하는 함수
     return circle; // div 태그, circle 클래스를 가진 엘리먼트 리턴
 }
 
-function addCircle() { // 원을 동적 생성하는 함수 (챔피언 수만큼 163개 생성함)
-    const container = document.getElementById('circleContainer'); // 챔피언 리스트 섹터에 있는 <div> 엘리먼트 갖고 옴
+function addCircle() { // 원을 동적 생성하는 함수 (챔피언 수만큼 생성함)
+    const container = document.getElementById('circleContainer'); // 챔피언 
     for (let i = 0; i < MAX_CHAMP; i++) { // 챔피언 수만큼 생성
         const circle = createCircle(); // div 태그, circle 클래스를 가진 엘리먼트를 리턴받음
         circle.style.textAlign = 'center'; // 텍스트 중앙정렬
@@ -239,11 +288,9 @@ function addCircle() { // 원을 동적 생성하는 함수 (챔피언 수만큼
         
         circle.appendChild(text);
 
-        
         container.appendChild(circle);
-        
-        container.style.border = '3px solid black';
     }
+    container.style.border = '3px solid black';
 }
 
 addCircle(); // 챔피언 수만큼 원을 생성하는 함수
@@ -256,7 +303,7 @@ searchInput.addEventListener('input', function() { // 검색창 리스너
     searchText = searchText.replace(/\s+/g, ""); // 공백 제거
 
     gridItems.forEach(item => {
-        let textContent = item.textContent; // 밴 리스트에 있는 각각의 엘리먼트 이름 갖고오기
+        let textContent = item.textContent; // 밴 리스트에 있는 각각의 엘리먼트 텍스트
         textContent = textContent.replace(/\s+/g, ""); // 공백 제거
 
         if (textContent.includes(searchText)) { // 비교
@@ -267,55 +314,57 @@ searchInput.addEventListener('input', function() { // 검색창 리스너
     })
 })
 
-function updateBanCard(i) { // 밴 카드를 업데이트하는 함수
-    const banCard = document.getElementById(`b${i + 1}`); // 밴 카드 엘리먼트의 id를 1 ~ 15로 지정했기 때문에 +1 
-    if (ban[i] == undefined) // 밴 배열의 i번째 인덱스가 비어있으면 초기화
-        banCard.src = `Champions/기본.jpg`;
-    else // 밴 배열의 i번째 인덱스에 챔피언 이름이 있으면 업데이트
-        banCard.src = `Champions/${ban[i]}.jpg`;
+function updateBan() { // Ban 배열에 있는 챔피언들을 밴 카드에 나타내주는 함수
+    for (let i = 0; i < 10; i++) {
+        const banCard = document.getElementById(`${BAN}${i + 1}`); // 밴 카드 엘리먼트
+        
+        if (ban[i] == undefined) // 값이 비어있으면 기본 사진으로
+            banCard.src = ORIGINAL.src;
+    
+        else // 값이 있으면 챔피언 사진으로
+            banCard.src = `Champions/${ban[i]}.jpg`;
+    }
 }
 
-function updateBan() { // 반복문 돌면서 updateBanCard 함수 실행하는 함수
-    for (let i = 0; i < 10; i++) // 인덱스 0 ~ 9까지 (밴 챔피언은 총 10개)
-        updateBanCard(i);
-}
-
-function addBan(id) { // 챔피언 리스트에서 이미지 클릭할 때 밴 배열에 추가
-    for (let i = 0; i < 10; i++) { // 처음부터 순서대로 밴 추가 (만약 중간에 비어있으면 들어가게끔)
-        if (banType == 1) { // 122밴 방식
+function addBan(champIndex) { // ban 배열에 챔피언 추가하는 함수
+    for (let i = 0; i < 10; i++) { // ban 배열에서 비어있는 인덱스에 챔피언 이름 넣음
+        if (banType == BANTYPE_122) {
             if (ban[ban122[i]] == undefined) { // ban122 배열에 저장되어있는 인덱스 순서에 따라 탐색
-                ban[ban122[i]] = champ[id]; // 해당 인덱스에 챔피언이 없으면 챔피언 이름 넣기
+                ban[ban122[i]] = champ[champIndex]; // ban 배열에 해당 챔피언 이름 넣음
                 break;
             }
         }
-        else if (banType == 2) { // 111밴 방식
+
+        else if (banType == BANTYPE_111) {
             if (ban[ban111[i]] == undefined) { // ban111 배열에 저장되어있는 인덱스 순서에 따라 탐색
-                ban[ban111[i]] = champ[id];
+                ban[ban111[i]] = champ[champIndex];
                 break;
             }
         }
     }
+
     updateBan(); // 밴 카드 업데이트
     const audio = new Audio('Sound/선택.wav');
     audio.play();
 }
 
-function removeBan(id) { // 밴 카드를 눌렀을 때 해당 엘리먼트 초기화
-    const image = document.getElementById(id);
-    const original = document.getElementById('기본');
-    const index = id.slice(1) - 1; // 밴 카드의 id가 b1 ~ b10이므로 인덱스만 추출
-    if (image.src == original.src) return; // 해당 엘리먼트에 챔피언이 없으면 리턴
+function removeBan(banCard) { // 밴 카드를 눌렀을 때 밴 취소하는 함수
+    if (banCard.src == ORIGINAL.src) return;
+    const banCardIndex = (banCard.id).slice(1) - 1;
 
-    ban[index] = undefined; // 밴 배열에서 해당 인덱스 값 초기화
+    ban[banCardIndex] = undefined; // 밴 배열에서 해당 인덱스 값 초기화
     updateBan(); // 밴 카드 업데이트
+
     const audio = new Audio('Sound/제거.wav');
     audio.play();
 }
 
-function changeBanType() { // 밴 타입을 변경하는 함수 (1 - 122, 2 - 111)
+function changeBanType() { // 밴 타입을 변경하는 함수
+    if (banType == BANTYPE_122) banType = BANTYPE_111;
+    else banType = BANTYPE_122;
+    
     changeBanFont(); // 타입 변경 버튼 텍스트 조정
-    if (banType == 1) banType = 2; // 1 -> 2
-    else banType = 1; // 2 -> 1
+
     const audio = new Audio('Sound/메뉴.wav');
     audio.play();
 }
@@ -323,16 +372,18 @@ function changeBanType() { // 밴 타입을 변경하는 함수 (1 - 122, 2 - 11
 function changeBanFont() { // (밴 타입 변경 버튼) 텍스트의 굵기를 조정하는 함수 (bold, normal)
     const ban122 = document.getElementById("ban-122"); // <span class="ban-122"> 122
     const ban111 = document.getElementById("ban-111"); // <span class="ban-111"> 111
-    if (banType == 1) { // 1 -> 2, 122는 normal, 111은 bold로 조정
-        ban122.classList.remove("bold");
-        ban122.classList.add("normal");
-        ban111.classList.remove("normal");
-        ban111.classList.add("bold");
-    }
-    else if (banType == 2) { // 2 -> 1, 122는 bold, 111은 normal로 조정
+
+    if (banType == BANTYPE_122) { // 122 normal -> bold, 111 bold -> normal 
         ban122.classList.remove("normal");
         ban122.classList.add("bold");
         ban111.classList.remove("bold");
         ban111.classList.add("normal");
+    }
+
+    else if (banType == BANTYPE_111) {
+        ban122.classList.remove("bold");
+        ban122.classList.add("normal");
+        ban111.classList.remove("normal");
+        ban111.classList.add("bold");
     }
 }

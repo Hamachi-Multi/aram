@@ -6,7 +6,8 @@ body, html {
 
 .background-image {
     background-image: url("Background/Freljord.jpg");
-    background-size: contain; /* 배경 이미지를 화면에 맞게 조절 */
+    background-position: center;
+    background-size: cover; /* 배경 이미지를 화면에 맞게 조절 */
     position: fixed; /* 배경 이미지를 고정시킴 */
     filter: brightness(0.5) saturate(0.4);
     top: 0;
@@ -42,8 +43,9 @@ button:hover {
 
 .top-container {
     display: flex;
-    margin-bottom: 1vh;
+    padding-bottom: 1vh;
     justify-content: center;
+    padding-bottom: 2vh;
 }
 
 .pick-card {
@@ -53,17 +55,13 @@ button:hover {
 
 .top-container img {
     display: flex;
-    width: 5.2vw;
+    width: 4.2vw;
     border-radius: 0%;
-    margin-right: 6px;
-    margin-left: 6px;
+    margin-right: 0.35vw;
+    margin-left: 0.35vw;
 }
 
-.team1pick {
-    display: flex;
-}
-
-.team2pick {
+.team1pick, .team2pick {
     display: flex;
 }
 
@@ -71,137 +69,113 @@ button:hover {
     border: 0;
     opacity: 1;
     cursor: auto;
-    padding-left: 2.2vw;
-    padding-right: 2.2vw;
+    padding-left: 3.5vw;
+    padding-right: 3.5vw;
 }
 
 .versus:hover {
-    transform: scale(1);
+    transform: scale(1.1);
 }
 
 .left-blank {
     padding-right: 15.4vw;
 }
 
+
+#기본-복사 {
+    width: 50vw;
+    height: 0.1vh;
+}
+
 .mid-container {
     display: flex;
-    height: 39vh;
+    height: 35vh;
     justify-content: center;
     align-items: center;
+    padding-bottom: 5vh;
 }
 
 .mid-container button {
-    width: 5vw;
+    width: 5.5vw;
     height: 5vh;
 }
 
-.copy-team {
-    margin-left: 1vw;
-    margin-right: 1vw;
+.copy-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-left: 1vw;
+    padding-right: 1vw;
+}
+
+.copy-container button {
+    width: 4vw;
+    height: 4.5vh;
+    border-radius: 5px;
+    overflow: hidden;
 }
 
 .text {
-    margin-left: 5px;
-    font-size: 20px;
-    object-fit: cover;
-    font-weight: bold;
+    padding-left: 4%;
+    width: 100%;
+    font-size: 14px;
+    text-shadow: 2px 2px 2px black; /* 검은색 테두리 설정 */
+    font-weight: normal;
 }
 
 .row {
     display: flex;
     align-items: center;
     height: 20%;
+    width: 100%;
     border-bottom: 1px solid black;
 }
 
-.team1 {
+.team1, .team2{
+    width: 25vw;
+    height: 100%;
     border: 3px solid black;
-    width: 29vw;
-    height: 95%;
+    border-radius: 5px;
     display: flex;
     overflow: hidden;
-    background: radial-gradient(at 50% 50%, #10212a, #020b12);
-    color: #d1d1d1;
+    background: radial-gradient(at 50% 50%, #10212a, #041420);
+    color: white;
 }
 
-.team1-1 {
+.team1-1, .team1-2, .team1-3,
+.team2-1, .team2-2, .team2-3 {
     display: flex;
     flex-direction: column;
-    width: 33%;
+    width: 33.3%;
     overflow: hidden;
     border-right: 1px solid black;
 }
 
-.team1-2 {
-    display: flex;
-    flex-direction: column;
-    width: 33%;
-    overflow: hidden;
-    border-right: 1px solid black;
-}
-
-.team1-3 {
-    display: flex;
-    flex-direction: column;
-    width: 34%;
-    overflow: hidden;
-}
-
-.team1 img {
-    margin-left: 7%;
+.team1 img, .team2 img {
+    margin-left: 4%;
+    width: 25%;
 }
 
 .main-menu {
     display: flex;
     flex-direction: column;
-    width: 10vw;
+    justify-content: center;
+    height: 100%;
+    width: 12vw;
     align-items: center;
 }
 
 .main-menu img {
-    width: 20%;
+    width: 10%;
+}
+
+.main-menu button {
+    border-radius: 5px;
 }
 
 .bold {
     font-size: 15px;
     font-weight: bold;
-}
-
-.team2 {
-    border: 3px solid black;
-    width: 29vw;
-    height: 95%;
-    display: flex;
-    overflow: hidden;
-    background: radial-gradient(at 50% 50%, #10212a, #020b12);
-    color: #d1d1d1;
-}
-
-.team2-1 {
-    display: flex;
-    flex-direction: column;
-    width: 33%;
-    overflow: hidden;
-    border-right: 1px solid black;
-}
-
-.team2-2 {
-    display: flex;
-    flex-direction: column;
-    width: 33%;
-    overflow: hidden;
-    border-right: 1px solid black;
-}
-
-.team2-3 {
-    display: flex;
-    flex-direction: column;
-    width: 34%;
-    overflow: hidden;
-}
-
-.team2 img {
-    margin-left: 7%;
 }
 
 .ban-pick {
@@ -218,29 +192,19 @@ button:hover {
 
 .search-container {
     display: flex;
-    justify-content: center;
     align-items: center;
-    margin-bottom: 1vh;
+    justify-content: center;
+    padding-bottom: 1vh;
 }
 
-.search-container img {
-    width: 6vw;
+#기본-검색 {
+    width: 25vw;
     height: 0.1vh;
-}
-
-#기본-중간 {
-    width: 11vw;
 }
 
 .search-container input {
     width: 8.5vw;
     height: 3vh;
-    margin-top: 2vh;
-}
-
-.search-container button {
-    width: 6vw;
-    height: 4.5vh;
 }
 
 .ban-container {
@@ -251,17 +215,17 @@ button:hover {
 
 .ban-list {
     display: grid;
-    grid-template-columns: repeat(8, 7vw);
+    grid-template-columns: repeat(6, 16.5%);
     grid-gap: 0px;
     overflow: auto;
     height: 38vh;
-    width: 58vw;
+    width: 43vw;
     margin-left: 1vw;
     margin-right: 1vw;
-    background: radial-gradient(at 50% 50%, #10212a, #020b12);
-    color: #d1d1d1;
+    background: radial-gradient(at 50% 50%, #10212a, #041420);
+    color: #ebebeb;
 }
 
 .ban-list img {
-    width: 60%;
+    width: 50%;
 }

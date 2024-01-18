@@ -12,206 +12,207 @@
   <div class="top-blank"></div>
   <div class="top-container"> <!-- 상단 컨테이너 -->
     <div class="team1pick"> <!-- 팀1 픽-->
-      <img id="team1pick1" onclick="removePick(id)" src="Champions/기본.jpg" alt="Image">
-      <img id="team1pick2" onclick="removePick(id)" src="Champions/기본.jpg" alt="Image">
-      <img id="team1pick3" onclick="removePick(id)" src="Champions/기본.jpg" alt="Image">
-      <img id="team1pick4" onclick="removePick(id)" src="Champions/기본.jpg" alt="Image">
-      <img id="team1pick5" onclick="removePick(id)" src="Champions/기본.jpg" alt="Image">
+      <img id="team1p1" onclick="clearPick(this)" src="Champions/기본.jpg" alt="Image">
+      <img id="team1p2" onclick="clearPick(this)" src="Champions/기본.jpg" alt="Image">
+      <img id="team1p3" onclick="clearPick(this)" src="Champions/기본.jpg" alt="Image">
+      <img id="team1p4" onclick="clearPick(this)" src="Champions/기본.jpg" alt="Image">
+      <img id="team1p5" onclick="clearPick(this)" src="Champions/기본.jpg" alt="Image">
     </div>
     <img class="versus" id="vs" src="VS/vs.png" alt="Image"> <!-- VS 이미지 -->
     <div class="team2pick"> <!-- 팀2 픽 -->
-      <img id="team2pick1" onclick="removePick(id)" src="Champions/기본.jpg" alt="Image">
-      <img id="team2pick2" onclick="removePick(id)" src="Champions/기본.jpg" alt="Image">
-      <img id="team2pick3" onclick="removePick(id)" src="Champions/기본.jpg" alt="Image">
-      <img id="team2pick4" onclick="removePick(id)" src="Champions/기본.jpg" alt="Image">
-      <img id="team2pick5" onclick="removePick(id)" src="Champions/기본.jpg" alt="Image">
+      <img id="team2p1" onclick="clearPick(this)" src="Champions/기본.jpg" alt="Image">
+      <img id="team2p2" onclick="clearPick(this)" src="Champions/기본.jpg" alt="Image">
+      <img id="team2p3" onclick="clearPick(this)" src="Champions/기본.jpg" alt="Image">
+      <img id="team2p4" onclick="clearPick(this)" src="Champions/기본.jpg" alt="Image">
+      <img id="team2p5" onclick="clearPick(this)" src="Champions/기본.jpg" alt="Image">
     </div>
   </div>
   <div class="mid-container"> <!-- 중앙 컨테이너 -->
+    <div class="copy-container">
+      <button class="copy-team" title="클립보드에 복사" onclick="copyRandomChampionsToClipboard(BLUE);">1팀 복사</button>
+    </div>
     <div class="team1"> <!-- 팀1 챔피언들 -->
       <div class="team1-1"> <!-- 팀1, 챔피언 1 ~ 챔피언 5 -->
         <div class="row">
-          <img id="team1p1" onclick="pickChamp(`team1p1t`, BLUE)" src="Champions/기본.jpg" alt="Image">
-          <div id="team1p1t" class="text"></div>
+          <img id="team1r1" onclick="pickChampion(this)" src="Champions/기본.jpg" alt="Image">
+          <div id="team1r1t" class="text"></div>
         </div>
         <div class="row">
-          <img id="team1p2" onclick="pickChamp(`team1p2t`, BLUE)" src="Champions/기본.jpg" alt="Image">
-          <div id="team1p2t" class="text"></div>
+          <img id="team1r2" onclick="pickChampion(this)" src="Champions/기본.jpg" alt="Image">
+          <div id="team1r2t" class="text"></div>
         </div>
         <div class="row">
-          <img id="team1p3" onclick="pickChamp(`team1p3t`, BLUE)" src="Champions/기본.jpg" alt="Image">
-          <div id="team1p3t" class="text"></div>
+          <img id="team1r3" onclick="pickChampion(this)" src="Champions/기본.jpg" alt="Image">
+          <div id="team1r3t" class="text"></div>
         </div>
         <div class="row">
-          <img id="team1p4" onclick="pickChamp(`team1p4t`, BLUE)" src="Champions/기본.jpg" alt="Image">
-          <div id="team1p4t" class="text"></div>
+          <img id="team1r4" onclick="pickChampion(this)" src="Champions/기본.jpg" alt="Image">
+          <div id="team1r4t" class="text"></div>
         </div>
         <div class="row">
-          <img id="team1p5" onclick="pickChamp(`team1p5t`, BLUE)" src="Champions/기본.jpg" alt="Image">
-          <div id="team1p5t" class="text"></div>
+          <img id="team1r5" onclick="pickChampion(this)" src="Champions/기본.jpg" alt="Image">
+          <div id="team1r5t" class="text"></div>
         </div>
       </div>
       <div class="team1-2"> <!-- 팀1, 챔피언 6 ~ 챔피언 10 -->
         <div class="row">
-          <img id="team1p6" onclick="pickChamp(`team1p6t`, BLUE)" src="Champions/기본.jpg" alt="Image">
-          <div id="team1p6t" class="text"></div>
+          <img id="team1r6" onclick="pickChampion(this)" src="Champions/기본.jpg" alt="Image">
+          <div id="team1r6t" class="text"></div>
         </div>
         <div class="row">
-          <img id="team1p7" onclick="pickChamp(`team1p7t`, BLUE)" src="Champions/기본.jpg" alt="Image">
-          <div id="team1p7t" class="text"></div>
+          <img id="team1r7" onclick="pickChampion(this)" src="Champions/기본.jpg" alt="Image">
+          <div id="team1r7t" class="text"></div>
         </div>
         <div class="row">
-          <img id="team1p8" onclick="pickChamp(`team1p8t`, BLUE)" src="Champions/기본.jpg" alt="Image">
-          <div id="team1p8t" class="text"></div>
+          <img id="team1r8" onclick="pickChampion(this)" src="Champions/기본.jpg" alt="Image">
+          <div id="team1r8t" class="text"></div>
         </div>
         <div class="row">
-          <img id="team1p9" onclick="pickChamp(`team1p9t`, BLUE)" src="Champions/기본.jpg" alt="Image">
-          <div id="team1p9t" class="text"></div>
+          <img id="team1r9" onclick="pickChampion(this)" src="Champions/기본.jpg" alt="Image">
+          <div id="team1r9t" class="text"></div>
         </div>
         <div class="row">
-          <img id="team1p10" onclick="pickChamp(`team1p10t`, BLUE)" src="Champions/기본.jpg" alt="Image">
-          <div id="team1p10t" class="text"></div>
+          <img id="team1r10" onclick="pickChampion(this)" src="Champions/기본.jpg" alt="Image">
+          <div id="team1r10t" class="text"></div>
         </div>
       </div>
       <div class="team1-3"> <!-- 팀1, 챔피언 11 ~ 챔피언 15 -->
         <div class="row">
-          <img id="team1p11" onclick="pickChamp(`team1p11t`, BLUE)" src="Champions/기본.jpg" alt="Image">
-          <div id="team1p11t" class="text"></div>
+          <img id="team1r11" onclick="pickChampion(this)" src="Champions/기본.jpg" alt="Image">
+          <div id="team1r11t" class="text"></div>
         </div>
         <div class="row">
-          <img id="team1p12" onclick="pickChamp(`team1p12t`, BLUE)" src="Champions/기본.jpg" alt="Image">
-          <div id="team1p12t" class="text"></div>
+          <img id="team1r12" onclick="pickChampion(this)" src="Champions/기본.jpg" alt="Image">
+          <div id="team1r12t" class="text"></div>
         </div>
         <div class="row">
-          <img id="team1p13" onclick="pickChamp(`team1p13t`, BLUE)" src="Champions/기본.jpg" alt="Image">
-          <div id="team1p13t" class="text"></div>
+          <img id="team1r13" onclick="pickChampion(this)" src="Champions/기본.jpg" alt="Image">
+          <div id="team1r13t" class="text"></div>
         </div>
         <div class="row">
-          <img id="team1p14" onclick="pickChamp(`team1p14t`, BLUE)" src="Champions/기본.jpg" alt="Image">
-          <div id="team1p14t" class="text"></div>
+          <img id="team1r14" onclick="pickChampion(this)" src="Champions/기본.jpg" alt="Image">
+          <div id="team1r14t" class="text"></div>
         </div>
         <div class="row">
-          <img id="team1p15" onclick="pickChamp(`team1p15t`, BLUE)" src="Champions/기본.jpg" alt="Image">
-          <div id="team1p15t" class="text"></div>
+          <img id="team1r15" onclick="pickChampion(this)" src="Champions/기본.jpg" alt="Image">
+          <div id="team1r15t" class="text"></div>
         </div>
       </div>
     </div>
-
+    
     <div class="main-menu"> <!-- 중앙 메뉴 (새로고침, 뽑을 챔피언 수, 밴 스타일, 초기화)-->
-      <button class="roll" onclick="rollChamp()">새로고침</button>
+      <button class="roll" title="무작위 챔피언 15명을 뽑습니다."; onclick="rollChampions()">새로고침</button>
       <img id="기본" style="opacity: 0; cursor: auto;" src="Champions/기본.jpg">
-      <button class="ban-type" onclick="changeChampType()">
-        <span class="bold" id="champ-15">15</span>
+      <button class="rand-type" title="무작위 챔피언 개수" onclick="changeRandomChampionsType()">
+        <span class="bold" id="rand-15">15</span>
         /
-        <span class="normal" id="champ-10">10</span>
+        <span class="normal" id="rand-10">10</span>
         /
-        <span class="normal" id="champ-5">5</span>
+        <span class="normal" id="rand-5">5</span>
       </button>
       <img id="기본" style="opacity: 0; cursor: auto;" src="Champions/기본.jpg">
-      <button class="ban-type" onclick="changeBanType()">
+      <button class="ban-type" title="밴 스타일" onclick="changeBanType()">
         <span class="bold" id="ban-122">122</span> / <span class="normal" id="ban-111">111</span>
       </button>
       <img id="기본" style="opacity: 0; cursor: auto;" src="Champions/기본.jpg">
       <button class="clear" onclick="clearAll()">초기화</button>
     </div>
-
+    
     <div class="team2"> <!-- 팀2 챔피언들 -->
       <div class="team2-1"> <!-- 팀2, 챔피언 1 ~ 챔피언 5 -->
         <div class="row">
-          <img id="team2p1" onclick="pickChamp(`team2p1t`, RED)" src="Champions/기본.jpg" alt="Image">
-          <div id="team2p1t" class="text"></div>
+          <img id="team2r1" onclick="pickChampion(this)" src="Champions/기본.jpg" alt="Image">
+          <div id="team2r1t" class="text"></div>
         </div>
         <div class="row">
-          <img id="team2p2" onclick="pickChamp(`team2p2t`, RED)" src="Champions/기본.jpg" alt="Image">
-          <div id="team2p2t" class="text"></div>
+          <img id="team2r2" onclick="pickChampion(this)" src="Champions/기본.jpg" alt="Image">
+          <div id="team2r2t" class="text"></div>
         </div>
         <div class="row">
-          <img id="team2p3" onclick="pickChamp(`team2p3t`, RED)" src="Champions/기본.jpg" alt="Image">
-          <div id="team2p3t" class="text"></div>
+          <img id="team2r3" onclick="pickChampion(this)" src="Champions/기본.jpg" alt="Image">
+          <div id="team2r3t" class="text"></div>
         </div>
         <div class="row">
-          <img id="team2p4" onclick="pickChamp(`team2p4t`, RED)" src="Champions/기본.jpg" alt="Image">
-          <div id="team2p4t" class="text"></div>
+          <img id="team2r4" onclick="pickChampion(this)" src="Champions/기본.jpg" alt="Image">
+          <div id="team2r4t" class="text"></div>
         </div>
         <div class="row">
-          <img id="team2p5" onclick="pickChamp(`team2p5t`, RED)" src="Champions/기본.jpg" alt="Image">
-          <div id="team2p5t" class="text"></div>
+          <img id="team2r5" onclick="pickChampion(this)" src="Champions/기본.jpg" alt="Image">
+          <div id="team2r5t" class="text"></div>
         </div>
       </div>
       <div class="team2-2"> <!-- 팀2, 챔피언 6 ~ 챔피언 10 -->
         <div class="row">
-          <img id="team2p6" onclick="pickChamp(`team2p6t`, RED)" src="Champions/기본.jpg" alt="Image">
-          <div id="team2p6t" class="text"></div>
+          <img id="team2r6" onclick="pickChampion(this)" src="Champions/기본.jpg" alt="Image">
+          <div id="team2r6t" class="text"></div>
         </div>
         <div class="row">
-          <img id="team2p7" onclick="pickChamp(`team2p7t`, RED)" src="Champions/기본.jpg" alt="Image">
-          <div id="team2p7t" class="text"></div>
+          <img id="team2r7" onclick="pickChampion(this)" src="Champions/기본.jpg" alt="Image">
+          <div id="team2r7t" class="text"></div>
         </div>
         <div class="row">
-          <img id="team2p8" onclick="pickChamp(`team2p8t`, RED)" src="Champions/기본.jpg" alt="Image">
-          <div id="team2p8t" class="text"></div>
+          <img id="team2r8" onclick="pickChampion(this)" src="Champions/기본.jpg" alt="Image">
+          <div id="team2r8t" class="text"></div>
         </div>
         <div class="row">
-          <img id="team2p9" onclick="pickChamp(`team2p9t`, RED)" src="Champions/기본.jpg" alt="Image">
-          <div id="team2p9t" class="text"></div>
+          <img id="team2r9" onclick="pickChampion(this)" src="Champions/기본.jpg" alt="Image">
+          <div id="team2r9t" class="text"></div>
         </div>
         <div class="row">
-          <img id="team2p10" onclick="pickChamp(`team2p10t`, RED)" src="Champions/기본.jpg" alt="Image">
-          <div id="team2p10t" class="text"></div>
+          <img id="team2r10" onclick="pickChampion(this)" src="Champions/기본.jpg" alt="Image">
+          <div id="team2r10t" class="text"></div>
         </div>
       </div>
       <div class="team2-3"> <!-- 팀2, 챔피언 11 ~ 챔피언 15 -->
         <div class="row">
-          <img id="team2p11" onclick="pickChamp(`team2p11t`, RED)" src="Champions/기본.jpg" alt="Image">
-          <div id="team2p11t" class="text"></div>
+          <img id="team2r11" onclick="pickChampion(this)" src="Champions/기본.jpg" alt="Image">
+          <div id="team2r11t" class="text"></div>
         </div>
         <div class="row">
-          <img id="team2p12" onclick="pickChamp(`team2p12t`, RED)" src="Champions/기본.jpg" alt="Image">
-          <div id="team2p12t" class="text"></div>
+          <img id="team2r12" onclick="pickChampion(this)" src="Champions/기본.jpg" alt="Image">
+          <div id="team2r12t" class="text"></div>
         </div>
         <div class="row">
-          <img id="team2p13" onclick="pickChamp(`team2p13t`, RED)" src="Champions/기본.jpg" alt="Image">
-          <div id="team2p13t" class="text"></div>
+          <img id="team2r13" onclick="pickChampion(this)" src="Champions/기본.jpg" alt="Image">
+          <div id="team2r13t" class="text"></div>
         </div>
         <div class="row">
-          <img id="team2p14" onclick="pickChamp(`team2p14t`, RED)" src="Champions/기본.jpg" alt="Image">
-          <div id="team2p14t" class="text"></div>
+          <img id="team2r14" onclick="pickChampion(this)" src="Champions/기본.jpg" alt="Image">
+          <div id="team2r14t" class="text"></div>
         </div>
         <div class="row">
-          <img id="team2p15" onclick="pickChamp(`team2p15t`, RED)" src="Champions/기본.jpg" alt="Image">
-          <div id="team2p15t" class="text"></div>
+          <img id="team2r15" onclick="pickChampion(this)" src="Champions/기본.jpg" alt="Image">
+          <div id="team2r15t" class="text"></div>
         </div>
       </div>
+    </div>
+    <div class="copy-container">
+      <button class="copy-team" title="클립보드에 복사" onclick="copyRandomChampionsToClipboard(RED);">2팀 복사</button>
     </div>
   </div>
 
   <div class="bottom-container"> <!-- 하단 컨테이너 -->
 
-    <div class="search-container"> <!-- 챔피언 검색 컨테이너 -->
-      <input type="text" style="opacity: 0;" placeholder="검색어를 입력하세요">
-      <img id="기본" style="opacity: 0; cursor: auto;" src="Champions/기본.jpg">
-      <button class="copy-team" onclick="copyTeam(BLUE)">1팀 복사</button>
-      <img id="기본-중간" style="opacity: 0; cursor: auto;" src="Champions/기본.jpg">
-      <button class="copy-team" onclick="copyTeam(RED)">2팀 복사</button>
-      <img id="기본" style="opacity: 0; cursor: auto;" src="Champions/기본.jpg">
-      <input type="text" id="searchInput" placeholder="챔피언 이름을 입력하세요">
+    <div class="search-container">
+      <input type="text" id="invisibleInput" style="opacity: 0;">
+      <img id="기본-검색" style="opacity: 0; cursor: auto;" src="Champions/기본.jpg">
+      <input type="text" id="searchInput" title="챔피언 검색" placeholder="챔피언 이름을 입력하세요">
     </div>
-  
     <div class="ban-container"> <!-- 밴 컨테이너 -->
       <div class="ban-pick">
-        <img id="b1" onclick="removeBan(id)" src="Champions/기본.jpg">
-        <img id="b2" onclick="removeBan(id)" src="Champions/기본.jpg">
-        <img id="b3" onclick="removeBan(id)" src="Champions/기본.jpg">
-        <img id="b4" onclick="removeBan(id)" src="Champions/기본.jpg">
-        <img id="b5" onclick="removeBan(id)" src="Champions/기본.jpg">
+        <img id="b1" onclick="removeBan(this)" src="Champions/기본.jpg">
+        <img id="b2" onclick="removeBan(this)" src="Champions/기본.jpg">
+        <img id="b3" onclick="removeBan(this)" src="Champions/기본.jpg">
+        <img id="b4" onclick="removeBan(this)" src="Champions/기본.jpg">
+        <img id="b5" onclick="removeBan(this)" src="Champions/기본.jpg">
       </div>
       <div class="ban-list" id="circleContainer"></div> <!-- 챔피언 리스트 -->
       <div class="ban-pick">
-        <img id="b6" onclick="removeBan(id)" src="Champions/기본.jpg">
-        <img id="b7" onclick="removeBan(id)" src="Champions/기본.jpg">
-        <img id="b8" onclick="removeBan(id)" src="Champions/기본.jpg">
-        <img id="b9" onclick="removeBan(id)" src="Champions/기본.jpg">
-        <img id="b10" onclick="removeBan(id)" src="Champions/기본.jpg">
+        <img id="b6" onclick="removeBan(this)" src="Champions/기본.jpg">
+        <img id="b7" onclick="removeBan(this)" src="Champions/기본.jpg">
+        <img id="b8" onclick="removeBan(this)" src="Champions/기본.jpg">
+        <img id="b9" onclick="removeBan(this)" src="Champions/기본.jpg">
+        <img id="b10" onclick="removeBan(this)" src="Champions/기본.jpg">
       </div>
     </div>
   </div>
