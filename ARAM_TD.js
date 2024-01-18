@@ -91,7 +91,7 @@ function getRandomChampionsArray(team) { // 랜덤으로 뽑은 챔프들 이름
 
 async function copyRandomChampionsToClipboard(team) {
     let randChampsList = getRandomChampionsArray(team); // 배열
-console.log(randChampsList);
+
     try {
         if (team == BLUE) // 만약 블루팀이면
             await navigator.clipboard.writeText("1팀:" + randChampsList); // 접두어를 1팀으로

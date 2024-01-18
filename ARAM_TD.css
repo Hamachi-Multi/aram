@@ -166,6 +166,7 @@ button:hover {
 }
 
 .main-menu img {
+    opacity: 0%;
     width: 10%;
 }
 
