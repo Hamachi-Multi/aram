@@ -142,6 +142,36 @@ function rollChampions() { // 새로고침을 눌렀을 때 반복문을 돌면�
     oldPick = newPick.slice(); // 챔피언들을 모두 뽑고 나서 oldPick(새로고침 이전 챔피언들) 배열에 newPick(새로고침 이후 챔피언들) 배열을 복사
 }
 
+async function requestPostChampions() {
+    const url = "http://localhost:5175/champions";
+    const data = {
+        TeamInfo: 1,
+        ChampionNames: 'cham1, cham2'
+    };
+
+    try {
+        const response = await fetch(url, {
+            method: 'POST',
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        });
+
+        // 응답 텍스트 출력
+        const responseJson = await response.text();
+        console.log(responseJson);
+
+        if (!response.ok) {
+            throw new Error(`HTTP error!! ${response.status}`);
+        }
+    }
+    catch (err) {
+        console.log(err);
+    }
+}
+
 function changeRandomChampionsType() { // 랜덤 챔피언 개수를 변경하는 함수
     if (randType == RANDTYPE_15) randType = RANDTYPE_10; // 현재 15가 선택되어있으면 10으로
     else if (randType == RANDTYPE_10) randType = RANDTYPE_5; // 10 -> 5
