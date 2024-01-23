@@ -142,34 +142,20 @@ function rollChampions() { // 새로고침을 눌렀을 때 반복문을 돌면�
     oldPick = newPick.slice(); // 챔피언들을 모두 뽑고 나서 oldPick(새로고침 이전 챔피언들) 배열에 newPick(새로고침 이후 챔피언들) 배열을 복사
 }
 
-async function requestPostChampions() {
-    const url = "http://localhost:5175/champions";
-    const data = {
-        TeamInfo: 1,
-        ChampionNames: 'cham1, cham2'
-    };
+function connectToServer() {
+    const connection = new signalR.HubConnectionBuilder()
+        .withUrl("http://localhost:5100/myhub", { withCredentials: true }) // 서버의 허브 엔드포인트를 지정
+        .build();
 
-    try {
-        const response = await fetch(url, {
-            method: 'POST',
-            credentials: 'include',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        });
+    connection.on("ReceiveMessage", (user, message) => {
+        console.log(`Received message from ${user}: ${message}`);
+    })
 
-        // 응답 텍스트 출력
-        const responseJson = await response.text();
-        console.log(responseJson);
-
-        if (!response.ok) {
-            throw new Error(`HTTP error!! ${response.status}`);
-        }
-    }
-    catch (err) {
-        console.log(err);
-    }
+    connection.start()
+        .then(() => {
+            connection.invoke("SendMessage", "John", "Hello!");
+        })
+        .catch(err => console.error(err));
 }
 
 function changeRandomChampionsType() { // 랜덤 챔피언 개수를 변경하는 함수
