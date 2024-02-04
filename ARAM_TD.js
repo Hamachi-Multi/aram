@@ -140,7 +140,7 @@ async function connectAsMain(button) {
 
     leagueType = (button == document.getElementById("league-all")) ? "all" : "team";
 
-    switchInputValue(button);
+    switchButtonText(button);
 
     connection = new signalR.HubConnectionBuilder()
     .configureLogging(signalR.LogLevel.None)
@@ -160,17 +160,17 @@ async function connectAsMain(button) {
             })
         })
     .catch(async () => {  
-        switchInputValue(button);
+        switchButtonText(button);
     });
     
     connectionLock = false;
 }
 
-async function switchInputValue(button) {
+async function switchButtonText(button) {
     if (buttonLock) return;
 
     buttonLock = true;
-
+    console.log("A");
     if (!buttonToggle) {
         buttonText = button.textContent;
         button.textContent = "연결 중.."
