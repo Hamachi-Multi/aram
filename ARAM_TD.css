@@ -31,7 +31,15 @@ img:hover {
 
 button {
     transition: transform 0.2s ease;
+    font-size: 0.8em;
 }
+
+@media (max-width: 1200px) {
+    button {
+        font-size: 0.6em;
+    }
+}
+
 
 button:hover {
     transform: scale(1.05);
@@ -92,7 +100,7 @@ button:hover {
     height: 35vh;
     justify-content: center;
     align-items: center;
-    padding-bottom: 5vh;
+    padding-bottom: 1.2vh;
 }
 
 .mid-container button {
@@ -100,7 +108,7 @@ button:hover {
     height: 5vh;
 }
 
-.copy-container {
+.copy-section {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -108,11 +116,51 @@ button:hover {
     padding-right: 1vw;
 }
 
-.copy-container button {
+.copy-section button {
     width: 4vw;
     height: 4.5vh;
     border-radius: 5px;
     overflow: hidden;
+}
+
+.code-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 3vh;
+}
+
+.code-container input {
+    width: 3%;
+    height: 3vh;
+    border: 2px solid black;
+    border-radius: 10px;
+    padding: 0px 25px;
+    text-align: center;
+    font-size: 1em;
+}
+
+@media (max-width: 1800px) {
+    .code-container input {
+        font-size: 0.8em;
+    }
+}
+
+@media (max-width: 800px) {
+    .code-container input {
+        font-size: 0.75em;
+    }
+}
+
+.code-container input:disabled {
+    background-color: #eeeeee;
+}
+
+.code-container img {
+    opacity: 0%;
+    width: 31.5%;
+    height: 0.1vh;
+    pointer-events: none;
 }
 
 .text {
@@ -172,11 +220,6 @@ button:hover {
 
 .main-menu button {
     border-radius: 5px;
-}
-
-.bold {
-    font-size: 15px;
-    font-weight: bold;
 }
 
 .ban-pick {

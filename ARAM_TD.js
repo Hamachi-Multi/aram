@@ -7,26 +7,18 @@ const champ = ["가렌","갈리오","갱플랭크","그라가스","그레이브�
 ,"요릭","우디르","우르곳","워윅","유미","이렐리아","이블린","이즈리얼","일라오이","자르반","자야","자이라","자크","잔나","잭스","제드","제라스","제리","제이스","조이","직스","진","질리언"
 ,"징크스","초가스","카르마","카밀","카사딘","카서스","카시오페아","카이사","카직스","카타리나","칼리스타","케넨","케이틀린","케인","케일","코그모","코르키","퀸","크산테","클레드","키아나"
 ,"킨드레드","타릭","탈론","탈리야","탐 켄치","트런들","트리스타나","트린다미어","트위스티드 페이트","트위치","티모","파이크","판테온","피들스틱","피오라","피즈","하이머딩거","헤카림","흐웨이"];
-const ban122 = [0, 5, 6, 1, 2, 7, 8, 3, 4, 9]; // 122 밴 인덱스 (블루팀 1밴 -> 레드팀 2밴 -> 블루팀 2밴 ...)
-const ban111 = [0, 5, 1, 6, 2, 7, 3, 8, 4, 9]; // 111 밴 인덱스 (블루팀 1밴 -> 레드팀 1밴 -> 블루팀 1밴 ...)
+const ban122 = [0, 0, 1, 1, 2, 2, 3, 3, 4, 4]; // 122 밴 인덱스 (블루팀 1밴 -> 레드팀 2밴 -> 블루팀 2밴 ...)
 
-const ORIGINAL = document.getElementById(`기본`);
+const ORIGINAL_IMAGE = document.getElementsByClassName(`기본`)[0].src;
 
 const MAX_CHAMP = 165;
 
 const BLUE = 1;
 const RED = 2;
 
-const RANDTYPE_15 = 15;
-const RANDTYPE_10 = 10;
-const RANDTYPE_5 = 5;
-
-const BANTYPE_122 = 1;
-const BANTYPE_111 = 2;
-
 const MAX_RAND_CHAMPS = 15;
 const MAX_PICK_CHAMPS = 5;
-const MAX_BAN_CHAMPS = 10;
+const MAX_BAN_CHAMPS = 5;
 
 const TEAM_BLUE_RAND = `team${BLUE}r`;
 const TEAM_RED_RAND = `team${RED}r`;
@@ -34,10 +26,24 @@ const TEAM_RED_RAND = `team${RED}r`;
 const TEAM_BLUE_PICK = `team${BLUE}p`;
 const TEAM_RED_PICK = `team${RED}p`;
 
-const BAN = `b`;
+const TEAM_BLUE_BAN = `team${BLUE}b`;
+const TEAM_RED_BAN = `team${RED}b`;
 
-let banType = 1; // 1 -> 122, 2 -> 111
-let randType = 15; // 1 -> 15, 2 -> 10, 3 -> 5
+let connection = new signalR.HubConnectionBuilder().configureLogging(signalR.LogLevel.None);
+let connectionLock = false;
+
+let leagueType = "all"; // all, team
+let leagueToggle = false;
+
+let inputToggle = false;
+let inputLock = false;
+let inputText;
+
+let buttonToggle = false;
+let buttonLock = false;
+let buttonText;
+
+let isMain = false;
 
 let oldPick = []; // 새로고침을 누르기 전에 있었던 픽들
 let newPick = []; // 새로고침을 눌러서 나온 픽들
@@ -59,7 +65,7 @@ function changeChampion(circleID, newPickIndex) { // 챔피언을 랜덤으로 �
             newPick[newPickIndex] = (champ[randChamp]); // 챔피언 이름을 newBan 배열에 push
 
             circle.src = `Champions/${imgUrl}.jpg`; // 원 이미지 변경
-            changeText(`${circleID}t`, champ[randChamp]) // 텍스트 변경
+            changeText(`${circleID}t`, champ[randChamp]); // 텍스트 변경
             break;
         }
     }
@@ -70,7 +76,7 @@ function changeText(textID, string) { // 텍스트 변경하는 함수
     text.textContent = string; // 텍스트 변경
 }
 
-function getRandomChampionsArray(team) { // 랜덤으로 뽑은 챔프들 이름을 클립보드로 복사하는 함수
+function getTeamRandomChampionsArray(team) { // 랜덤으로 뽑은 챔프들 이름을 클립보드로 복사하는 함수
     let randChampsList = []; // 임시로 챔프들을 저장할 배열
 
     if (team == BLUE) { // 만약 블루팀이면
@@ -90,7 +96,7 @@ function getRandomChampionsArray(team) { // 랜덤으로 뽑은 챔프들 이름
 }
 
 async function copyRandomChampionsToClipboard(team) {
-    let randChampsList = getRandomChampionsArray(team); // 배열
+    let randChampsList = getTeamRandomChampionsArray(team); // 배열
 
     try {
         if (team == BLUE) // 만약 블루팀이면
@@ -108,129 +114,374 @@ async function copyRandomChampionsToClipboard(team) {
 
 function rollChampions() { // 새로고침을 눌렀을 때 반복문을 돌면서 changeChamp 함수를 실행하는 함수
     newPick = []; // 복사하기 전에 초기화
-    if (randType == RANDTYPE_15) { // 랜덤 챔피언 15개
-        for (let i = 0; i < RANDTYPE_15; i++) {
-            changeChampion(`${TEAM_BLUE_RAND}${i + 1}`, i);
-            changeChampion(`${TEAM_RED_RAND}${i + 1}`, i + 15);
-        }
+    for (let i = 0; i < MAX_RAND_CHAMPS; i++) {
+        changeChampion(TEAM_BLUE_RAND + i, i);
+        changeChampion(TEAM_RED_RAND + i, i + 15);
     }
 
-    else if (randType == RANDTYPE_10) { // 랜덤 챔피언 10개
-       for (let i = 0; i < RANDTYPE_10; i++) { // 랜덤 챔피언 10개 뽑기
-            changeChampion(`${TEAM_BLUE_RAND}${i + 1}`, i);
-            changeChampion(`${TEAM_RED_RAND}${i + 1}`, i + 15);
-       }
-       for (let i = RANDTYPE_10; i < MAX_RAND_CHAMPS; i++) { // 남은 5칸 초기화
-            clearCircle(`${TEAM_BLUE_RAND}${i + 1}`, i);
-            clearCircle(`${TEAM_RED_RAND}${i + 1}`, i + 15);
-       }
-    }
-    
-    else if (randType == RANDTYPE_5) { // 팀당 챔피언 5개
-        for (let i = 0; i < RANDTYPE_5; i++) { // 랜덤 챔피언 5개 뽑기
-             changeChampion(`${TEAM_BLUE_RAND}${i + 1}`, i);
-             changeChampion(`${TEAM_RED_RAND}${i + 1}`, i + 15);
-        }
-        for (let i = RANDTYPE_5; i < MAX_RAND_CHAMPS; i++) { // 남은 10칸 초기화
-             clearCircle(`${TEAM_BLUE_RAND}${i + 1}`, i);
-             clearCircle(`${TEAM_RED_RAND}${i + 1}`, i + 15);
-        }
-    }
-    
     const audio = new Audio('Sound/메뉴.wav');
     audio.play();
     oldPick = newPick.slice(); // 챔피언들을 모두 뽑고 나서 oldPick(새로고침 이전 챔피언들) 배열에 newPick(새로고침 이후 챔피언들) 배열을 복사
 }
 
-function connectToServer() {
-    const connection = new signalR.HubConnectionBuilder()
-        .withUrl("http://localhost:5100/myhub", { withCredentials: true }) // 서버의 허브 엔드포인트를 지정
-        .build();
+async function connectAsMain(button) {
+    if (connectionLock) return;
+    
+    connectionLock = true;
 
-    connection.on("ReceiveMessage", (user, message) => {
-        console.log(`Received message from ${user}: ${message}`);
-    })
+    const audio = new Audio('Sound/메뉴.wav');
+    audio.play();
 
-    connection.start()
-        .then(() => {
-            connection.invoke("SendMessage", "John", "Hello!");
+    if (connection.state === signalR.HubConnectionState.Connected) {
+        await connection.stop();
+        switchLeagueModeForMain();
+        leagueToggle = false;
+    }
+
+    leagueType = (button == document.getElementById("league-all")) ? "all" : "team";
+
+    switchInputValue(button);
+
+    connection = new signalR.HubConnectionBuilder()
+    .configureLogging(signalR.LogLevel.None)
+    .withUrl("http://localhost:5100/myhub")
+    .build();
+    
+    await connection.start()
+    .then(() => {
+            connection.invoke("InitMainConnection", leagueType)
+            connection.on("ReceiveAllCode", (all) => {
+                switchLeagueModeForMain(all);
+                isMain = true;
+            });
+            connection.on("ReceiveTeamCode", (blue, red) => {
+                switchLeagueModeForMain(blue, red);
+                isMain = true;
+            })
         })
-        .catch(err => console.error(err));
+    .catch(async () => {  
+        switchInputValue(button);
+    });
+    
+    connectionLock = false;
 }
 
-function changeRandomChampionsType() { // 랜덤 챔피언 개수를 변경하는 함수
-    if (randType == RANDTYPE_15) randType = RANDTYPE_10; // 현재 15가 선택되어있으면 10으로
-    else if (randType == RANDTYPE_10) randType = RANDTYPE_5; // 10 -> 5
-    else randType = RANDTYPE_15; // 5 -> 15
+async function switchInputValue(button) {
+    if (buttonLock) return;
 
-    changeRandomChampionsTypeFont(); // 타입 변경 버튼 텍스트 조정
-    updateRollTitle();
+    buttonLock = true;
+
+    if (!buttonToggle) {
+        buttonText = button.textContent;
+        button.textContent = "연결 중.."
+        
+        buttonToggle = true;
+    }
+    else {
+        button.textContent = "연결 실패";
+        await delay(500);
+        button.textContent = buttonText;
+
+        buttonToggle = false;
+    }
+
+    buttonLock = false;
+}
+
+async function connectAsSub(input) {
+    if (connectionLock) return;
+    
+    connectionLock = true;
+
+    const audio = new Audio('Sound/메뉴.wav');
+    audio.play();
+
+    if (connection.state === signalR.HubConnectionState.Connected) {
+        await connection.stop();
+        leagueToggle = false;
+    }
+
+    let team;
+
+    const code = input.value;
+
+    team = (input == blueCodeInput) ? "blue" : "red";
+ 
+    switchInputValue(input);
+
+    connection = new signalR.HubConnectionBuilder()
+    //.configureLogging(signalR.LogLevel.None)
+    .withUrl("http://localhost:5100/myhub")
+    .build();
+
+    await connection.start()
+        .then(() => {
+            connection.invoke(`AddSubConnection`, code, team)
+            .then(() => {
+                switchLeagueModeForSub(team);
+                isMain = false;
+            })
+            .catch(async () => {
+                switchInputValue(input);
+            });
+
+            connection.on("ReceiveChampions", (champions) => {
+                newPick = champions;
+                updateRandomChampionsFromMain();
+            });
+
+            connection.on("Disconnected", (message) => {
+                clearButton();
+            });
+        })
+        .catch(async () => {  
+            switchInputValue(input);
+        })
+        
+
+
+    connectionLock = false;
+}
+
+async function switchInputValue(input) {
+    if (inputLock) return;
+
+    inputLock = true;
+
+    if (!inputToggle) {
+        inputText = input.value;
+        input.value = "....";
+        input.readOnly = true;
+        
+        inputToggle = true;
+    }
+    else {
+        input.value = "실패";
+        await delay(500);
+        input.readOnly = false;
+        input.value = inputText;
+
+        inputToggle = false;
+    }
+
+    inputLock = false;
+}
+
+function switchLeagueModeForSub(team) {
+    let mid = document.querySelectorAll(".main-menu *");
+    let bottom = document.querySelector(".bottom-container");
+    let clear = document.getElementById("clear");
+
+    if (!leagueToggle) {
+        mid.forEach(function (element) {
+            element.style.opacity = "0";
+            element.style.pointerEvents = "none";
+        });
+
+        bottom.style.opacity = "0";
+        bottom.style.pointerEvents = "none";
+
+        clear.style.opacity = "1";
+        clear.style.pointerEvents = "auto";
+        clear.textContent = "해제";
+        
+        if (team == "blue")
+            redCodeInput.value = "";
+        else if (team == "red") {
+            blueCodeInput.value = "";
+        }
+
+        blueCodeInput.disabled = true;
+        redCodeInput.disabled = true;
+
+        leagueToggle = true;
+    }
+    else {
+        mid.forEach(function (element) {
+            if (element.className !== "기본") {
+            element.style.opacity = "1";
+            element.style.pointerEvents = "auto";
+            }
+        });
+    
+        bottom.style.opacity = "1";
+        bottom.style.pointerEvents = "auto";
+    
+        clear.textContent = "초기화";
+
+        blueCodeInput.value = "";
+        redCodeInput.value = "";
+
+        blueCodeInput.disabled = false;
+        redCodeInput.disabled = false;
+    }
+}
+
+function clearButton() {
+    if (!leagueToggle || isMain) {
+        clearAll();
+        sendChampions();
+        if (!isMain) {
+            document.getElementById("blueCodeInput").value = "";
+            document.getElementById("redCodeInput").value = "";
+        }
+    }
+    else {
+        switchLeagueModeForSub();
+        disconnect();
+        leagueToggle = false;
+    }
+
+}
+
+function switchLeagueModeForMain(code1, code2) {
+    let allButton = document.getElementById("league-all");
+    let teamButton = document.getElementById("league-team");
+    
+    if (!leagueToggle) {
+        if (leagueType == "all") {
+            allButton.textContent = "해제";
+            allButton.onclick = disconnect;
+
+            blueCodeInput.value = code1;
+            blueCodeInput.disabled = true;
+
+            redCodeInput.value = code1;
+            redCodeInput.disabled = true;
+        }
+        else if (leagueType == "team") {
+            teamButton.textContent = "해제";
+            teamButton.onclick = disconnect;
+            
+            blueCodeInput.value = code1;
+            blueCodeInput.disabled = true;
+
+            redCodeInput.value = code2;
+            redCodeInput.disabled = true;
+        }
+
+        leagueToggle = true;
+    } 
+    else {
+        if (leagueType == "all" && teamButton.textContent == "해제") {
+            teamButton.textContent = "대회 팀 모드";
+            teamButton.onclick = function () {
+                connectAsMain(teamButton);
+            };
+            leagueToggle = false;
+            switchLeagueModeForMain(code1, code2);
+        }
+        else if (leagueType == "team" && allButton.textContent == "해제") {
+            allButton.textContent = "대회 전체 모드";
+            allButton.onclick = function () {
+                connectAsMain(allButton);
+            };
+            leagueToggle = false;
+            switchLeagueModeForMain(code1, code2);
+        }
+        else {
+            allButton.textContent = "대회 전체 모드";
+            allButton.onclick = function () {
+                connectAsMain(allButton);
+            };
+            teamButton.textContent = "대회 팀 모드";
+            teamButton.onclick = function () {
+                connectAsMain(teamButton);
+            };
+            
+            let inputs = document.querySelectorAll(".code-container *");
+            inputs.forEach((element) => {
+                element.value = "";
+                element.disabled = false;
+            })
+            
+            leagueToggle = false;
+        }
+    }
+}
+
+function disconnect() {
+    connection.stop();
+    switchLeagueModeForMain();
+    const audio = new Audio('Sound/메뉴.wav');
+    audio.play();
+}
+
+const blueCodeInput = document.getElementById("blueCodeInput");
+
+blueCodeInput.addEventListener("keydown", function (event) {
+    if (event.key == "Enter") {
+        connectAsSub(blueCodeInput);
+    }
+});
+
+const redCodeInput = document.getElementById("redCodeInput");
+
+redCodeInput.addEventListener("keydown", function (event) {
+    if (event.key == "Enter") {
+        connectAsSub(redCodeInput);
+    }
+});
+
+function sendChampions() {
+    if (connection.state === signalR.HubConnectionState.Connected) {
+        connection.invoke("SendChampionsToSub", newPick, leagueType)
+    }
+}
+
+function updateRandomChampionsFromMain() {
+    let circle, text;
+
+    for (let i = 0; i < 30; i++) {
+        if (i < 15) {
+            circle = document.getElementById(`team1r${i}`);
+            text = document.getElementById(`team1r${i}t`);
+        }
+        else {
+            circle = document.getElementById(`team2r${i - 15}`);
+            text = document.getElementById(`team2r${i - 15}t`);
+        }
+
+        if (newPick[i] == null) {
+            circle.src = ORIGINAL_IMAGE;
+            text.textContent = "";
+        }
+        else {
+            circle.src = `Champions/${newPick[i]}.jpg`;
+            text.textContent = newPick[i];
+        }
+    }
+
+    oldPick = [];
 
     const audio = new Audio('Sound/메뉴.wav');
     audio.play();
 }
 
-function changeRandomChampionsTypeFont() { // (랜덤 챔피언 개수 변경 버튼) 텍스트 스타일을 변경하는 함수 (normal, bold)
-    const champ15 = document.getElementById("rand-15"); // 버튼 엘리먼트 안에 span 태그를 사용해서 15 10 5 각각 씀, 15 / 10 / 5 이렇게 되어있음
-    const champ10 = document.getElementById("rand-10");
-    const champ5 = document.getElementById("rand-5");
-
-    if (randType == RANDTYPE_15) { // 15 normal -> bold, 5 bold -> normal
-        champ15.classList.remove("normal");
-        champ15.classList.add("bold");
-        champ5.classList.remove("bold");
-        champ5.classList.add("normal");
-    }
-
-    else if (randType == RANDTYPE_10) { // 10 normal -> bold, 15 bold -> normal
-        champ10.classList.remove("normal");
-        champ10.classList.add("bold");
-        champ15.classList.remove("bold");
-        champ15.classList.add("normal");
-    }
-
-    else if (randType == RANDTYPE_5) { // 5 normal -> bold, 10 bold -> normal
-        champ5.classList.remove("normal");
-        champ5.classList.add("bold");
-        champ10.classList.remove("bold");
-        champ10.classList.add("normal");
-    }
-}
-
-function updateRollTitle() {
-    rollButton = document.getElementsByClassName("roll")[0];
-    if (randType == RANDTYPE_15) {
-        rollButton.title = "무작위 챔피언 15명을 뽑습니다.";
-    } else if (randType == RANDTYPE_10) {
-        rollButton.title = "무작위 챔피언 10명을 뽑습니다.";
-    } else if (randType == RANDTYPE_5) {
-        rollButton.title = "무작위 챔피언 5명을 뽑습니다.";
-    }
-}
-
 function clearCard(cardID) { // 엘리먼트의 이미지를 초기화하는 함수
     const image = document.getElementById(cardID);
-    image.src = ORIGINAL.src;
+    image.src = ORIGINAL_IMAGE;
 }
 
 function clearCircle(circleID, arrIndex) { // 엘리먼트의 이미지와 텍스트를 초기화하는 함수
     newPick[arrIndex] = undefined; // newPick[arrIndex] 값 초기화
+
     const circle = document.getElementById(circleID);
     const text = document.getElementById(`${circleID}t`);
-    circle.src = ORIGINAL.src;
+    circle.src = ORIGINAL_IMAGE;
     text.textContent = "";
 }
 
 function pickChampion(circle) { // 랜덤 챔피언을 누르면 픽 카드에 챔피언을 추가하는 함수
-    if (circle.src == ORIGINAL.src) return;
+    if (circle.src == ORIGINAL_IMAGE) return;
 
     let team = ((String)(circle.id).startsWith(TEAM_BLUE_RAND)) ? BLUE : RED; // 해당 함수를 호출한 엘리먼트의 id를 비교해서 팀 설정
     let pickCard;
 
     for (let i = 0; i < 5; i++) { // 반복문 돌면서 비어있는 픽 카드 탐색
         // 블루팀 픽 카드 or 레드팀 픽 카드
-        pickCard = (team == BLUE) ? document.getElementById(`${TEAM_BLUE_PICK}${i + 1}`) : document.getElementById(`${TEAM_RED_PICK}${i + 1}`);
-        if (pickCard.src == ORIGINAL.src) {
+        pickCard = (team == BLUE) ? document.getElementById(TEAM_BLUE_PICK + i) : document.getElementById(TEAM_RED_PICK + i);
+        if (pickCard.src == ORIGINAL_IMAGE) {
             pickCard.src = circle.src;
             break;
         }
@@ -241,9 +492,9 @@ function pickChampion(circle) { // 랜덤 챔피언을 누르면 픽 카드에 �
 }
 
 function clearPick(circle) { // 픽 카드 초기화
-    if (circle.src == ORIGINAL.src) return;
+    if (circle.src == ORIGINAL_IMAGE) return;
 
-    circle.src = ORIGINAL.src;
+    circle.src = ORIGINAL_IMAGE;
 
     const audio = new Audio('Sound/제거.wav');
     audio.play();
@@ -251,22 +502,22 @@ function clearPick(circle) { // 픽 카드 초기화
 
 function clearAll() { // 반복문을 돌면서 모든 엘리먼트들을 초기화하는 함수
     for (let i = 0; i < MAX_RAND_CHAMPS; i++) {
-        clearCircle(`${TEAM_BLUE_RAND}${i + 1}`, i); // 블루팀 랜덤 챔피언 초기화
-        clearCircle(`${TEAM_RED_RAND}${i + 1}`, i); // 레드팀 랜덤 챔피언 초기화
+        clearCircle(TEAM_BLUE_RAND + i, i); // 블루팀 랜덤 챔피언 초기화
+        clearCircle(TEAM_RED_RAND + i, i); // 레드팀 랜덤 챔피언 초기화
     }
 
     for (let i = 0; i < MAX_PICK_CHAMPS; i++) {
-        clearCard(`${TEAM_BLUE_PICK}${i + 1}`); // 블루팀 픽 카드 초기화
-        clearCard(`${TEAM_RED_PICK}${i + 1}`); // 레드팀 픽 카드 초기화
+        clearCard(TEAM_BLUE_PICK + i); // 블루팀 픽 카드 초기화
+        clearCard(TEAM_RED_PICK + i); // 레드팀 픽 카드 초기화
     }
 
     for (let i = 0; i < MAX_BAN_CHAMPS; i++) {
-        clearCard(`${BAN}${i + 1}`); // 밴 초기화
+        clearCard(TEAM_BLUE_BAN + i); // 밴 초기화
+        clearCard(TEAM_RED_BAN + i); // 밴 초기화
     }
 
     const audio = new Audio('Sound/메뉴.wav');
     audio.play();
-    
     oldPick = []; // 새로고침 이전 챔피언들 초기화
     newPick = []; // 새로고침 이후 챔피언들 초기화
     ban = []; // 밴 챔피언들 초기화
@@ -300,7 +551,6 @@ function addCircle() { // 원을 동적 생성하는 함수 (챔피언 수만큼
         text.style.display = 'block';
         text.style.textAlign = 'center';
         text.style.marginBottom = '10px';
-        text.style.fontWeight = 'bold';
         
         circle.appendChild(text);
 
@@ -331,75 +581,66 @@ searchInput.addEventListener('input', function() { // 검색창 리스너
 })
 
 function updateBan() { // Ban 배열에 있는 챔피언들을 밴 카드에 나타내주는 함수
-    for (let i = 0; i < 10; i++) {
-        const banCard = document.getElementById(`${BAN}${i + 1}`); // 밴 카드 엘리먼트
-        
-        if (ban[i] == undefined) // 값이 비어있으면 기본 사진으로
-            banCard.src = ORIGINAL.src;
-    
-        else // 값이 있으면 챔피언 사진으로
-            banCard.src = `Champions/${ban[i]}.jpg`;
+    for (let i = 0; i < 5; i++) {
+        let banCard_blue = document.getElementById(TEAM_BLUE_BAN + i); // 밴 카드 엘리먼트
+        let banCard_red = document.getElementById(TEAM_RED_BAN + i); // 밴 카드 엘리먼트
+
+        banCard_blue.src = (ban[i] == undefined) ? ORIGINAL_IMAGE : `Champions/${ban[i]}.jpg`;
+        banCard_red.src = (ban[i + 5] == undefined) ? ORIGINAL_IMAGE : `Champions/${ban[i + 5]}.jpg`;
     }
 }
 
-function addBan(champIndex) { // ban 배열에 챔피언 추가하는 함수
-    for (let i = 0; i < 10; i++) { // ban 배열에서 비어있는 인덱스에 챔피언 이름 넣음
-        if (banType == BANTYPE_122) {
-            if (ban[ban122[i]] == undefined) { // ban122 배열에 저장되어있는 인덱스 순서에 따라 탐색
-                ban[ban122[i]] = champ[champIndex]; // ban 배열에 해당 챔피언 이름 넣음
-                break;
-            }
-        }
+function addBan(champIndex) { // ban 배열에 챔피언 추가하는 함수    
+    let ban_blue = 0;
+    let ban_red = 0;
+    let type = 1;
 
-        else if (banType == BANTYPE_111) {
-            if (ban[ban111[i]] == undefined) { // ban111 배열에 저장되어있는 인덱스 순서에 따라 탐색
-                ban[ban111[i]] = champ[champIndex];
+    while (!(ban_blue == ban_red == MAX_BAN_CHAMPS)) {
+        if (ban_red < ban_blue) type = 2;
+        else if (ban_blue < ban_red) type = 1;
+
+        if (type == 1) {
+            if (ban[ban_blue] == undefined) {
+                ban[ban_blue] = champ[champIndex];
                 break;
             }
+            ban_blue++;
+        }
+        else if (type == 2) {
+            if (ban[ban_red + 5] == undefined) {
+                ban[ban_red + 5] = champ[champIndex];
+                break;
+            }
+            ban_red++;
         }
     }
 
+    if (ban_red == 5 && ban_blue == 5) return;
+    
     updateBan(); // 밴 카드 업데이트
     const audio = new Audio('Sound/선택.wav');
     audio.play();
 }
 
 function removeBan(banCard) { // 밴 카드를 눌렀을 때 밴 취소하는 함수
-    if (banCard.src == ORIGINAL.src) return;
-    const banCardIndex = (banCard.id).slice(1) - 1;
+    if (banCard.src == ORIGINAL_IMAGE) return;
 
-    ban[banCardIndex] = undefined; // 밴 배열에서 해당 인덱스 값 초기화
+    let matches = (banCard.id).match(/\d+/g);
+
+    let index = parseInt(matches[1], 10);
+
+    if (matches[0] == BLUE)
+        ban[index] = undefined;
+
+    else if (matches[0] == RED)
+        ban[index + MAX_BAN_CHAMPS] = undefined;
+
     updateBan(); // 밴 카드 업데이트
 
     const audio = new Audio('Sound/제거.wav');
     audio.play();
 }
 
-function changeBanType() { // 밴 타입을 변경하는 함수
-    if (banType == BANTYPE_122) banType = BANTYPE_111;
-    else banType = BANTYPE_122;
-    
-    changeBanFont(); // 타입 변경 버튼 텍스트 조정
-
-    const audio = new Audio('Sound/메뉴.wav');
-    audio.play();
-}
-
-function changeBanFont() { // (밴 타입 변경 버튼) 텍스트의 굵기를 조정하는 함수 (bold, normal)
-    const ban122 = document.getElementById("ban-122"); // <span class="ban-122"> 122
-    const ban111 = document.getElementById("ban-111"); // <span class="ban-111"> 111
-
-    if (banType == BANTYPE_122) { // 122 normal -> bold, 111 bold -> normal 
-        ban122.classList.remove("normal");
-        ban122.classList.add("bold");
-        ban111.classList.remove("bold");
-        ban111.classList.add("normal");
-    }
-
-    else if (banType == BANTYPE_111) {
-        ban122.classList.remove("bold");
-        ban122.classList.add("normal");
-        ban111.classList.remove("normal");
-        ban111.classList.add("bold");
-    }
+function delay(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
 }

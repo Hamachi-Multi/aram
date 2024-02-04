@@ -3,6 +3,7 @@
 
 <head>
   <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-sacle=1.0">
   <title>무작위 총력전 토너먼트 드래프트</title>
   <link rel="stylesheet" type="text/css" href="ARAM_TD.css">
   <link rel="icon" href="favicon.ico">
@@ -13,27 +14,31 @@
   <div class="top-blank"></div>
   <div class="top-container"> <!-- 상단 컨테이너 -->
     <div class="team1pick"> <!-- 팀1 픽-->
+      <img id="team1p0" onclick="clearPick(this)" src="Champions/기본.jpg">
       <img id="team1p1" onclick="clearPick(this)" src="Champions/기본.jpg">
       <img id="team1p2" onclick="clearPick(this)" src="Champions/기본.jpg">
       <img id="team1p3" onclick="clearPick(this)" src="Champions/기본.jpg">
       <img id="team1p4" onclick="clearPick(this)" src="Champions/기본.jpg">
-      <img id="team1p5" onclick="clearPick(this)" src="Champions/기본.jpg">
     </div>
     <img class="versus" id="vs" src="VS/vs.png"> <!-- VS 이미지 -->
     <div class="team2pick"> <!-- 팀2 픽 -->
+      <img id="team2p0" onclick="clearPick(this)" src="Champions/기본.jpg">
       <img id="team2p1" onclick="clearPick(this)" src="Champions/기본.jpg">
       <img id="team2p2" onclick="clearPick(this)" src="Champions/기본.jpg">
       <img id="team2p3" onclick="clearPick(this)" src="Champions/기본.jpg">
       <img id="team2p4" onclick="clearPick(this)" src="Champions/기본.jpg">
-      <img id="team2p5" onclick="clearPick(this)" src="Champions/기본.jpg">
     </div>
   </div>
   <div class="mid-container"> <!-- 중앙 컨테이너 -->
-    <div class="copy-container">
+    <div class="copy-section">
       <button class="copy-team" title="클립보드에 복사" onclick="copyRandomChampionsToClipboard(BLUE);">1팀 복사</button>
     </div>
     <div class="team1"> <!-- 팀1 챔피언들 -->
       <div class="team1-1"> <!-- 팀1, 챔피언 1 ~ 챔피언 5 -->
+        <div class="row">
+          <img id="team1r0" onclick="pickChampion(this)" src="Champions/기본.jpg">
+          <div id="team1r0t" class="text"></div>
+        </div>
         <div class="row">
           <img id="team1r1" onclick="pickChampion(this)" src="Champions/기본.jpg">
           <div id="team1r1t" class="text"></div>
@@ -50,12 +55,12 @@
           <img id="team1r4" onclick="pickChampion(this)" src="Champions/기본.jpg">
           <div id="team1r4t" class="text"></div>
         </div>
+      </div>
+      <div class="team1-2"> <!-- 팀1, 챔피언 6 ~ 챔피언 10 -->
         <div class="row">
           <img id="team1r5" onclick="pickChampion(this)" src="Champions/기본.jpg">
           <div id="team1r5t" class="text"></div>
         </div>
-      </div>
-      <div class="team1-2"> <!-- 팀1, 챔피언 6 ~ 챔피언 10 -->
         <div class="row">
           <img id="team1r6" onclick="pickChampion(this)" src="Champions/기본.jpg">
           <div id="team1r6t" class="text"></div>
@@ -72,12 +77,12 @@
           <img id="team1r9" onclick="pickChampion(this)" src="Champions/기본.jpg">
           <div id="team1r9t" class="text"></div>
         </div>
+      </div>
+      <div class="team1-3"> <!-- 팀1, 챔피언 11 ~ 챔피언 15 -->
         <div class="row">
           <img id="team1r10" onclick="pickChampion(this)" src="Champions/기본.jpg">
           <div id="team1r10t" class="text"></div>
         </div>
-      </div>
-      <div class="team1-3"> <!-- 팀1, 챔피언 11 ~ 챔피언 15 -->
         <div class="row">
           <img id="team1r11" onclick="pickChampion(this)" src="Champions/기본.jpg">
           <div id="team1r11t" class="text"></div>
@@ -94,33 +99,25 @@
           <img id="team1r14" onclick="pickChampion(this)" src="Champions/기본.jpg">
           <div id="team1r14t" class="text"></div>
         </div>
-        <div class="row">
-          <img id="team1r15" onclick="pickChampion(this)" src="Champions/기본.jpg">
-          <div id="team1r15t" class="text"></div>
-        </div>
       </div>
     </div>
     
     <div class="main-menu"> <!-- 중앙 메뉴 (새로고침, 뽑을 챔피언 수, 밴 스타일, 초기화)-->
-      <button class="roll" title="무작위 챔피언 15명을 뽑습니다."; onclick="rollChampions(); connectToServer();">새로고침</button>
-      <img id="기본" src="Champions/기본.jpg">
-      <button class="rand-type" title="무작위 챔피언 개수" onclick="changeRandomChampionsType()">
-        <span class="bold" id="rand-15">15</span>
-        /
-        <span class="normal" id="rand-10">10</span>
-        /
-        <span class="normal" id="rand-5">5</span>
-      </button>
-      <img id="기본" src="Champions/기본.jpg">
-      <button class="ban-type" title="밴 스타일" onclick="changeBanType()">
-        <span class="bold" id="ban-122">122</span> / <span class="normal" id="ban-111">111</span>
-      </button>
-      <img id="기본" src="Champions/기본.jpg">
-      <button class="clear" onclick="clearAll()">초기화</button>
+      <button id="roll" title="무작위 챔피언 15명을 뽑습니다."; onclick="rollChampions(); sendChampions();">새로고침</button>
+      <img class="기본" src="Champions/기본.jpg">
+      <button id="league-all" onclick="connectAsMain(this)" >대회 전체 모드</button>
+      <img class="기본" src="Champions/기본.jpg">
+      <button id="league-team" onclick="connectAsMain(this)">대회 팀 모드</button>
+      <img class="기본" src="Champions/기본.jpg">
+      <button id="clear" title="모든 요소들을 초기화합니다." onclick="clearButton()">초기화</button>
     </div>
     
     <div class="team2"> <!-- 팀2 챔피언들 -->
       <div class="team2-1"> <!-- 팀2, 챔피언 1 ~ 챔피언 5 -->
+        <div class="row">
+          <img id="team2r0" onclick="pickChampion(this)" src="Champions/기본.jpg">
+          <div id="team2r0t" class="text"></div>
+        </div>
         <div class="row">
           <img id="team2r1" onclick="pickChampion(this)" src="Champions/기본.jpg">
           <div id="team2r1t" class="text"></div>
@@ -137,12 +134,12 @@
           <img id="team2r4" onclick="pickChampion(this)" src="Champions/기본.jpg">
           <div id="team2r4t" class="text"></div>
         </div>
+      </div>
+      <div class="team2-2"> <!-- 팀2, 챔피언 6 ~ 챔피언 10 -->
         <div class="row">
           <img id="team2r5" onclick="pickChampion(this)" src="Champions/기본.jpg">
           <div id="team2r5t" class="text"></div>
         </div>
-      </div>
-      <div class="team2-2"> <!-- 팀2, 챔피언 6 ~ 챔피언 10 -->
         <div class="row">
           <img id="team2r6" onclick="pickChampion(this)" src="Champions/기본.jpg">
           <div id="team2r6t" class="text"></div>
@@ -159,12 +156,12 @@
           <img id="team2r9" onclick="pickChampion(this)" src="Champions/기본.jpg">
           <div id="team2r9t" class="text"></div>
         </div>
+      </div>
+      <div class="team2-3"> <!-- 팀2, 챔피언 11 ~ 챔피언 15 -->
         <div class="row">
           <img id="team2r10" onclick="pickChampion(this)" src="Champions/기본.jpg">
           <div id="team2r10t" class="text"></div>
         </div>
-      </div>
-      <div class="team2-3"> <!-- 팀2, 챔피언 11 ~ 챔피언 15 -->
         <div class="row">
           <img id="team2r11" onclick="pickChampion(this)" src="Champions/기본.jpg">
           <div id="team2r11t" class="text"></div>
@@ -181,15 +178,16 @@
           <img id="team2r14" onclick="pickChampion(this)" src="Champions/기본.jpg">
           <div id="team2r14t" class="text"></div>
         </div>
-        <div class="row">
-          <img id="team2r15" onclick="pickChampion(this)" src="Champions/기본.jpg">
-          <div id="team2r15t" class="text"></div>
-        </div>
       </div>
     </div>
-    <div class="copy-container">
+    <div class="copy-section">
       <button class="copy-team" title="클립보드에 복사" onclick="copyRandomChampionsToClipboard(RED);">2팀 복사</button>
     </div>
+  </div>
+  <div class="code-container">
+    <input id="blueCodeInput">
+    <img class="기본" src="Champions/기본.jpg">
+    <input id="redCodeInput">
   </div>
 
   <div class="bottom-container"> <!-- 하단 컨테이너 -->
@@ -201,24 +199,23 @@
     </div>
     <div class="ban-container"> <!-- 밴 컨테이너 -->
       <div class="ban-pick">
-        <img id="b1" onclick="removeBan(this)" src="Champions/기본.jpg">
-        <img id="b2" onclick="removeBan(this)" src="Champions/기본.jpg">
-        <img id="b3" onclick="removeBan(this)" src="Champions/기본.jpg">
-        <img id="b4" onclick="removeBan(this)" src="Champions/기본.jpg">
-        <img id="b5" onclick="removeBan(this)" src="Champions/기본.jpg">
+        <img id="team1b0" onclick="removeBan(this)" src="Champions/기본.jpg">
+        <img id="team1b1" onclick="removeBan(this)" src="Champions/기본.jpg">
+        <img id="team1b2" onclick="removeBan(this)" src="Champions/기본.jpg">
+        <img id="team1b3" onclick="removeBan(this)" src="Champions/기본.jpg">
+        <img id="team1b4" onclick="removeBan(this)" src="Champions/기본.jpg">
       </div>
       <div class="ban-list" id="circleContainer"></div> <!-- 챔피언 리스트 -->
       <div class="ban-pick">
-        <img id="b6" onclick="removeBan(this)" src="Champions/기본.jpg">
-        <img id="b7" onclick="removeBan(this)" src="Champions/기본.jpg">
-        <img id="b8" onclick="removeBan(this)" src="Champions/기본.jpg">
-        <img id="b9" onclick="removeBan(this)" src="Champions/기본.jpg">
-        <img id="b10" onclick="removeBan(this)" src="Champions/기본.jpg">
+        <img id="team2b0" onclick="removeBan(this)" src="Champions/기본.jpg">
+        <img id="team2b1" onclick="removeBan(this)" src="Champions/기본.jpg">
+        <img id="team2b2" onclick="removeBan(this)" src="Champions/기본.jpg">
+        <img id="team2b3" onclick="removeBan(this)" src="Champions/기본.jpg">
+        <img id="team2b4" onclick="removeBan(this)" src="Champions/기본.jpg">
       </div>
     </div>
   </div>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.1/signalr.js"></script>
-  <script src="ARAM_TD.js"> </script>
-
+  <script src="ARAM_TD.js"></script>
 </body>
 </html>
