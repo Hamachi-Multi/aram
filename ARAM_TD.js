@@ -136,6 +136,7 @@ async function connectAsMain(button) {
         await connection.stop();
         switchLeagueModeForMain();
         leagueToggle = false;
+        buttonToggle = false;
     }
 
     leagueType = (button == document.getElementById("league-all")) ? "all" : "team";
@@ -170,7 +171,7 @@ async function switchButtonText(button) {
     if (buttonLock) return;
 
     buttonLock = true;
-    console.log("A");
+
     if (!buttonToggle) {
         buttonText = button.textContent;
         button.textContent = "연결 중.."
