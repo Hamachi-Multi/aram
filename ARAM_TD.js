@@ -35,11 +35,9 @@ let connectionLock = false;
 let leagueType = "all"; // all, team
 let leagueToggle = false;
 
-let inputToggle = false;
 let inputLock = false;
-let inputText;
+let inputValue;
 
-let buttonToggle = false;
 let buttonLock = false;
 let buttonText;
 
@@ -141,8 +139,6 @@ async function connectAsMain(button) {
 
     leagueType = (button == document.getElementById("league-all")) ? "all" : "team";
 
-    switchButtonText(button);
-
     connection = new signalR.HubConnectionBuilder()
     .configureLogging(signalR.LogLevel.None)
     .withUrl("http://localhost:5100/myhub")
@@ -172,19 +168,13 @@ async function switchButtonText(button) {
 
     buttonLock = true;
 
-    if (!buttonToggle) {
-        buttonText = button.textContent;
-        button.textContent = "연결 중.."
-        
-        buttonToggle = true;
-    }
-    else {
-        button.textContent = "연결 실패";
-        await delay(500);
-        button.textContent = buttonText;
+    buttonText = button.textContent;
+    button.textContent = "연결 실패";
+    await delay(500);
+    button.textContent = buttonText;
 
-        buttonToggle = false;
-    }
+    buttonToggle = false;
+
 
     buttonLock = false;
 }
@@ -207,8 +197,6 @@ async function connectAsSub(input) {
     const code = input.value;
 
     team = (input == blueCodeInput) ? "blue" : "red";
- 
-    switchInputValue(input);
 
     connection = new signalR.HubConnectionBuilder()
     //.configureLogging(signalR.LogLevel.None)
@@ -249,21 +237,12 @@ async function switchInputValue(input) {
 
     inputLock = true;
 
-    if (!inputToggle) {
-        inputText = input.value;
-        input.value = "....";
-        input.readOnly = true;
-        
-        inputToggle = true;
-    }
-    else {
-        input.value = "실패";
-        await delay(500);
-        input.readOnly = false;
-        input.value = inputText;
-
-        inputToggle = false;
-    }
+    inputValue = input.value;
+    input.value = "실패";
+    input.readOnly = true;
+    await delay(500);
+    input.readOnly = false;
+    input.value = inputValue;
 
     inputLock = false;
 }
