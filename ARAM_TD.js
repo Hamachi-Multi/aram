@@ -160,7 +160,7 @@ async function connectAsMain(button) {
             })
         })
     .catch(async () => {  
-        switchButtonText(button);
+        await switchButtonText(button);
     });
     
     connectionLock = false;
