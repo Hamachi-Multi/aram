@@ -91,14 +91,15 @@ button:hover {
 
 .mid-container {
     display: flex;
-    height: 35vh;
+    height: 38vh;
     justify-content: center;
     align-items: center;
     padding-bottom: 1.2vh;
+    margin-top: 6.5vh;
 }
 
 .mid-container button {
-    width: 5.5vw;
+    width: 7vw;
     height: 5vh;
 }
 
@@ -125,6 +126,8 @@ button:hover {
 }
 
 .code-container input {
+    opacity: 0;
+    pointer-events: none;
     width: 3%;
     height: 3vh;
     border: 2px solid black;
@@ -203,7 +206,7 @@ button:hover {
     flex-direction: column;
     justify-content: center;
     height: 100%;
-    width: 25vw;
+    width: 22.5vw;
     align-items: center;
 }
 

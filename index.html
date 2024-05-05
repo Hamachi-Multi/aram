@@ -12,16 +12,17 @@
 <body>
   <div class="background-image"></div> <!-- 배경화면 -->
   <div class="top-blank"></div>
-  <div class="top-container"> <!-- 상단 컨테이너 -->
-    <div class="team1pick"> <!-- 팀1 픽-->
+<!--
+  <div class="top-container">
+    <div class="team1pick">
       <img id="team1p0" onclick="clearPick(this)" src="Champions/기본.jpg">
       <img id="team1p1" onclick="clearPick(this)" src="Champions/기본.jpg">
       <img id="team1p2" onclick="clearPick(this)" src="Champions/기본.jpg">
       <img id="team1p3" onclick="clearPick(this)" src="Champions/기본.jpg">
       <img id="team1p4" onclick="clearPick(this)" src="Champions/기본.jpg">
     </div>
-    <img class="versus" id="vs" src="VS/vs.png"> <!-- VS 이미지 -->
-    <div class="team2pick"> <!-- 팀2 픽 -->
+    <img class="versus" id="vs" src="VS/vs.png">
+    <div class="team2pick">
       <img id="team2p0" onclick="clearPick(this)" src="Champions/기본.jpg">
       <img id="team2p1" onclick="clearPick(this)" src="Champions/기본.jpg">
       <img id="team2p2" onclick="clearPick(this)" src="Champions/기본.jpg">
@@ -29,6 +30,7 @@
       <img id="team2p4" onclick="clearPick(this)" src="Champions/기본.jpg">
     </div>
   </div>
+-->
   <div class="mid-container"> <!-- 중앙 컨테이너 -->
     <div class="copy-section">
       <button class="copy-team" title="클립보드에 복사" onclick="copyRandomChampionsToClipboard(BLUE);">1팀 복사</button>
@@ -105,10 +107,14 @@
     <div class="main-menu"> <!-- 중앙 메뉴 (새로고침, 뽑을 챔피언 수, 밴 스타일, 초기화)-->
       <button id="roll" title="무작위 챔피언 15명을 뽑습니다."; onclick="rollChampions(); sendChampions();">새로고침</button>
       <img class="기본" src="Champions/기본.jpg">
+      <button id="타이머" title="타이머">타이머</button>
+      <img class="기본" src="Champions/기본.jpg">
+      <!--
       <button id="league-all" onclick="connectAsMain(this)" >대회 전체 모드</button>
       <img class="기본" src="Champions/기본.jpg">
       <button id="league-team" onclick="connectAsMain(this)">대회 팀 모드</button>
       <img class="기본" src="Champions/기본.jpg">
+      -->
       <button id="clear" title="모든 요소들을 초기화합니다." onclick="clearButton()">초기화</button>
     </div>
     

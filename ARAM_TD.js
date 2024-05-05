@@ -110,6 +110,44 @@ async function copyRandomChampionsToClipboard(team) {
     audio.play();
 }
 
+let timerInterval;
+
+function startTimer() {
+    let timerButton = document.getElementById("타이머");
+    let seconds = 0;
+
+    const audio = new Audio('Sound/메뉴.wav');
+    audio.play();
+
+    if (timerInterval) {
+        clearInterval(timerInterval); // 현재 타이머가 실행 중이면 중지시킴
+        timerButton.textContent = "타이머";
+        timerInterval = false;
+        timerButton.style.backgroundColor = "";
+        return;
+    }
+
+    timerButton.textContent = "00:00";
+
+    timerInterval = setInterval(function() {
+        seconds++;
+        var minutes = Math.floor((seconds % 3600) / 60);
+        var remainingSeconds = seconds % 60;
+
+        timerButton.textContent = ("0" + minutes).slice(-2) + ":" +
+                                 ("0" + remainingSeconds).slice(-2);
+
+        if (5 <= minutes) {
+            timerButton.style.backgroundColor = "salmon";
+        }
+        else if (3 <= minutes) {
+            timerButton.style.backgroundColor = "skyblue";
+        }
+    }, 1000);
+}
+
+document.getElementById("타이머").addEventListener("click", startTimer);
+
 function rollChampions() { // 새로고침을 눌렀을 때 반복문을 돌면서 changeChamp 함수를 실행하는 함수
     newPick = []; // 복사하기 전에 초기화
     for (let i = 0; i < MAX_RAND_CHAMPS; i++) {
@@ -314,6 +352,7 @@ function clearButton() {
 
 }
 
+/*
 function switchLeagueModeForMain(code1, code2) {
     let allButton = document.getElementById("league-all");
     let teamButton = document.getElementById("league-team");
@@ -437,6 +476,7 @@ function updateRandomChampionsFromMain() {
     const audio = new Audio('Sound/메뉴.wav');
     audio.play();
 }
+*/
 
 function clearCard(cardID) { // 엘리먼트의 이미지를 초기화하는 함수
     const image = document.getElementById(cardID);
