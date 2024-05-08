@@ -116,7 +116,7 @@ function startTimer() {
     let timerButton = document.getElementById("타이머");
     let seconds = 0;
 
-    const audio = new Audio('Sound/메뉴.wav');
+    const audio = new Audio('Sound/선택.wav');
     audio.play();
 
     if (timerInterval) {
@@ -335,6 +335,7 @@ function switchLeagueModeForSub(team) {
     }
 }
 
+/*
 function clearButton() {
     if (!leagueToggle || isMain) {
         clearAll();
@@ -351,7 +352,7 @@ function clearButton() {
     }
 
 }
-
+*/
 /*
 function switchLeagueModeForMain(code1, code2) {
     let allButton = document.getElementById("league-all");
@@ -485,7 +486,6 @@ function clearCard(cardID) { // 엘리먼트의 이미지를 초기화하는 함
 
 function clearCircle(circleID, arrIndex) { // 엘리먼트의 이미지와 텍스트를 초기화하는 함수
     newPick[arrIndex] = undefined; // newPick[arrIndex] 값 초기화
-
     const circle = document.getElementById(circleID);
     const text = document.getElementById(`${circleID}t`);
     circle.src = ORIGINAL_IMAGE;
@@ -524,11 +524,6 @@ function clearAll() { // 반복문을 돌면서 모든 엘리먼트들을 초기
     for (let i = 0; i < MAX_RAND_CHAMPS; i++) {
         clearCircle(TEAM_BLUE_RAND + i, i); // 블루팀 랜덤 챔피언 초기화
         clearCircle(TEAM_RED_RAND + i, i); // 레드팀 랜덤 챔피언 초기화
-    }
-
-    for (let i = 0; i < MAX_PICK_CHAMPS; i++) {
-        clearCard(TEAM_BLUE_PICK + i); // 블루팀 픽 카드 초기화
-        clearCard(TEAM_RED_PICK + i); // 레드팀 픽 카드 초기화
     }
 
     for (let i = 0; i < MAX_BAN_CHAMPS; i++) {
