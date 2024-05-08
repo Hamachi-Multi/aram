@@ -219,6 +219,11 @@ button:hover {
     border-radius: 5px;
 }
 
+#타이머 {
+    font-size: 15px;
+    font-weight: bold;
+}
+
 .ban-pick {
     display: flex;
     flex-direction: column;
